@@ -1,0 +1,32 @@
+.content{
+  margin: 0 40px;
+}
+.chart{
+  margin: 50px 0;
+  width:100%;
+  overflow: scroll;
+  border:2px solid #666;
+}
+.chart svg{
+  margin:10px;
+}
+.bar {
+  fill: steelblue;
+  cursor: pointer;
+}
+.bar:hover {
+  fill: slateblue;
+}
+g.axis{
+  font-size: 12px;
+}
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.axis-x path {
+  display: none;
+}
