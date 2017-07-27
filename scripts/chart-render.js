@@ -1,3 +1,4 @@
+
 const barHeight = 50;
 const chartMargin = {top: 20, right: 20, bottom: 30, left: 40};
 
@@ -12,14 +13,12 @@ function renderDateAxis(g, width, height, minDate=0, maxDate=31){
       .attr("transform", "translate(0,0)")
       .call(customXAxis);//d3.axisTop(x));
 
-
   function customXAxis(g) {
     g.call(xAxis);
     g.select(".domain").remove();
     g.selectAll(".tick:not(:first-of-type) line").attr("stroke", "#777").attr("stroke-dasharray", "2,2");
     g.selectAll(".tick text").attr("y", 4).attr("dx", 15);
   }
-
   return x;
 }
 
@@ -39,7 +38,6 @@ function renderTaskAxis(g, width, data){
     g.selectAll(".tick:not(:last-of-type) line").attr("stroke", "#777").attr("stroke-dasharray", "2,2");
     g.selectAll(".tick text").attr("x", 4).attr("dy", -4);
   }
-
   return y;
 }
 
@@ -53,6 +51,7 @@ function renderChart(data, minDate, maxDate){
 
   var x = renderDateAxis(g, width, height, minDate, maxDate);
   var y = renderTaskAxis(g, width, data);
+
 
   g.selectAll(".bar")
       .data(data)
