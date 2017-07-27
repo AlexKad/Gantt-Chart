@@ -1,23 +1,45 @@
-const barHeight = 40;
+const barHeight = 50;
 const chartMargin = {top: 20, right: 20, bottom: 30, left: 40};
 
-function renderDateScale(g, width, minDate=0, maxDate=31){
-  var x = d3.scaleLinear().rangeRound([45, width]);
+function renderDateAxis(g, width, height, minDate=0, maxDate=31){
+  var x = d3.scaleLinear().rangeRound([55, width]);
   x.domain([minDate, maxDate]);
+
+  var xAxis = d3.axisBottom(x).tickSize(height);
+
   g.append("g")
       .attr("class", "axis axis-x")
       .attr("transform", "translate(0,0)")
-      .call(d3.axisTop(x));
+      .call(customXAxis);//d3.axisTop(x));
+
+
+  function customXAxis(g) {
+    g.call(xAxis);
+    g.select(".domain").remove();
+    g.selectAll(".tick:not(:first-of-type) line").attr("stroke", "#777").attr("stroke-dasharray", "2,2");
+    g.selectAll(".tick text").attr("y", 4).attr("dx", 15);
+  }
+
   return x;
 }
 
-function renderTaskScale(g, data){
-  var y = d3.scaleBand().rangeRound([ barHeight*data.length, 0]);
-  y.domain(data.map(function(d) { return d.name; }));
+function renderTaskAxis(g, width, data){
+  var y = d3.scaleBand()
+            .rangeRound([ barHeight*data.length, 20])
+            .domain(data.map(function(d) { return d.name; }));
+  var yAxis = d3.axisRight(y).tickSize(width);
   g.append("g")
       .attr("class", "axis axis-y")
       .attr("transform", "translate(0,0)")
-      .call(d3.axisLeft(y));
+      .call(customYAxis);//d3.axisLeft(y));
+
+  function customYAxis(g) {
+    g.call(yAxis);
+    g.select(".domain").remove();
+    g.selectAll(".tick:not(:last-of-type) line").attr("stroke", "#777").attr("stroke-dasharray", "2,2");
+    g.selectAll(".tick text").attr("x", 4).attr("dy", -4);
+  }
+
   return y;
 }
 
@@ -29,8 +51,8 @@ function renderChart(data, minDate, maxDate){
   var g = svg.append("g")
           .attr("transform", "translate(" + chartMargin.left + "," + chartMargin.top + ")");
 
-  var x = renderDateScale(g, width, minDate, maxDate);
-  var y = renderTaskScale(g, data);
+  var x = renderDateAxis(g, width, height, minDate, maxDate);
+  var y = renderTaskAxis(g, width, data);
 
   g.selectAll(".bar")
       .data(data)
@@ -39,5 +61,5 @@ function renderChart(data, minDate, maxDate){
         .attr("x", function(d) { return x(d.start); })
         .attr("y", function(d) { return y(d.name); })
         .attr("width", function(d) { return x(d.end)-x(d.start); })
-        .attr("height", barHeight-5);
+        .attr("height", barHeight/2);
 }
