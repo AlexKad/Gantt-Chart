@@ -5,13 +5,12 @@
   margin: 50px 0;
   width:100%;
   overflow: scroll;
-  border:2px solid #666;
 }
 .chart svg{
   margin:10px;
 }
 .bar {
-  fill: steelblue;
+  fill: #26a526;
   cursor: pointer;
 }
 .bar:hover {
@@ -20,11 +19,19 @@
 g.axis{
   font-size: 12px;
 }
-.axis path,
-.axis line {
+
+.axis .tick line,
+.axis .tick line{
   fill: none;
-  stroke: #cecece;
+  stroke: #969696;
+  stroke-width:2;
   shape-rendering: crispEdges;
+}
+
+.axis .tick:not(:first-of-type):not(:last-of-type) line {
+  stroke: #cecece;
+  stroke-dasharray: 2,2;
+  stroke-width:1;
 }
 
 .axis text{
