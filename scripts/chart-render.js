@@ -24,7 +24,7 @@ function renderDateAxis(g, width, height, minDate=0, maxDate=31){
 
 function renderTaskAxis(g, width, data){
   var y = d3.scaleBand()
-            .rangeRound([ barHeight*data.length, 20])
+            .rangeRound([ 20, barHeight*data.length])
             .domain(data.map(function(d) { return d.name; }));
   var yAxis = d3.axisRight(y).tickSize(width);
   g.append("g")
