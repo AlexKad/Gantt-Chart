@@ -23,10 +23,10 @@ g.axis{
 .axis path,
 .axis line {
   fill: none;
-  stroke: #000;
+  stroke: #cecece;
   shape-rendering: crispEdges;
 }
 
-.axis-x path {
-  display: none;
+.axis text{
+  font-size: 14px;
 }
