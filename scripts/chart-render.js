@@ -92,3 +92,9 @@ function renderChart(data, minDate, maxDate){
         .attr("width", function(d) { return dateScale(d.end+1)-dateScale(d.start); })
         .attr("height", barHeight);
 }
+
+function updateChart(data, minDate, maxDate){
+  var svg = d3.select("svg");
+  svg.selectAll("*").remove();
+  renderChart(data, minDate, maxDate);
+}

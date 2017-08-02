@@ -18,9 +18,24 @@ function showAddTaskWnd(){
 }
 
 function addTask(){
-  //TODO: read data and push to tasks
+  var name = $("#taskName").val();
+  var startDate = $("#startDate").val();
+  var endDate = $("#endDate").val();
+
+  var start  = new Date(startDate).getDate();
+  var end = new Date(endDate).getDate();
+  tasks.push({ name, start, end});
+
   closeEditWnd();
+  updateChartData();
   editForm.trigger('reset');
+}
+
+function updateChartData(){
+  var minDate = Math.min.apply(null, tasks.map(el => el.start));
+  var maxDate = Math.max.apply(null, tasks.map(el => el.end));
+
+  updateChart(tasks, minDate, maxDate);
 }
 
 function closeEditWnd(){
