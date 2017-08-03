@@ -68,14 +68,15 @@ function renderNameAxis(scale, svg, width){
 }
 
 function renderChart(data, minDate, maxDate){
-  var svg = d3.select("svg"),
-      width = +svg.attr("width"),
-      height = +svg.attr("height");
-
+  var svg = d3.select("svg");
   var g = svg.append("g");
 
   var dateAxisWidth =  barHeight*(maxDate+1-minDate) + barHeight;
   var nameAxisHeight = barHeight*data.length;
+
+  svg.attr('width', dateAxisWidth + paddingLeft + 10)
+     .attr('height', nameAxisHeight + paddingTop + 10);
+
 
   var dateScale = getDateScale(minDate, maxDate, dateAxisWidth);
   var nameScale = getNameScale(data);

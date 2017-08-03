@@ -22,9 +22,12 @@ function addTask(){
   var startDate = $("#startDate").val();
   var endDate = $("#endDate").val();
 
-  var start  = new Date(startDate).getDate();
-  var end = new Date(endDate).getDate();
+console.log(startDate);
+  var start  = new Date(startDate).getUTCDate();
+  var end = new Date(endDate).getUTCDate();
   tasks.push({ name, start, end});
+
+  console.log(start, end);
 
   closeEditWnd();
   updateChartData();
