@@ -7,8 +7,13 @@ function getTranslateValues(translate){
 }
 
 function getDateScale(minDate, maxDate, width){
-  var scale = d3.scaleLinear()
-                .domain([minDate, maxDate])
+  var dates = [];
+  //TODO: bug if last task end date == maxDate
+  for(let i=minDate; i<=maxDate+1; i++){
+    dates.push(i);
+  }
+  var scale = d3.scalePoint()
+                .domain(dates)
                 .range([0, width-paddingLeft]);
   return scale;
 }
@@ -92,6 +97,7 @@ function renderChart(data, minDate, maxDate){
         .attr("y", function(d) { return nameScale(d.name)+paddingTop; })
         .attr("width", function(d) { return dateScale(d.end+1)-dateScale(d.start); })
         .attr("height", barHeight);
+
 }
 
 function updateChart(data, minDate, maxDate){
