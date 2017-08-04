@@ -72,7 +72,7 @@ function renderNameAxis(scale, svg, width){
    }
 }
 
-function renderChart(data, minDate, maxDate){
+function renderChart(data, minDate, maxDate, clickFn){
   var svg = d3.select("svg");
   var g = svg.append("g");
 
@@ -96,12 +96,13 @@ function renderChart(data, minDate, maxDate){
         .attr("x", function(d) { return dateScale(d.start)+paddingLeft; })
         .attr("y", function(d) { return nameScale(d.name)+paddingTop; })
         .attr("width", function(d) { return dateScale(d.end+1)-dateScale(d.start); })
-        .attr("height", barHeight);
+        .attr("height", barHeight)
+        .on("click", function(d,i) { clickFn(d);});
 
 }
 
-function updateChart(data, minDate, maxDate){
+function updateChart(data, minDate, maxDate, clickFn){
   var svg = d3.select("svg");
   svg.selectAll("*").remove();
-  renderChart(data, minDate, maxDate);
+  renderChart(data, minDate, maxDate, clickFn);
 }
