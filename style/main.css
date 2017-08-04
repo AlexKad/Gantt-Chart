@@ -43,6 +43,10 @@ g.axis{
   font-size: 14px;
 }
 
+button{
+  cursor: pointer;
+  padding:10px;
+}
 
 .modal{
   display: none;
@@ -69,11 +73,6 @@ g.axis{
   margin-left:0;
   padding: 5px;
   width:100%;
-}
-
-.modal-body button{
-  cursor: pointer;
-  padding:10px;
 }
 
 .mask{

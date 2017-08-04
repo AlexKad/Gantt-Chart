@@ -10,7 +10,7 @@
 <body>
   <div class="content">
     <h3>Gantt Chart</h3>
-    <button type="button" name="button" onclick="addTask();">Add task</button>
+    <button type="button" name="button" onclick="addTask();">Add new task</button>
     <div class="chart">
       <svg width="980" height="500"></svg>
     </div>
@@ -22,14 +22,14 @@
       <i></i>
     </div>
     <div class="modal-body">
-      <form action="#" id="editForm">
+      <form action="#" id="editForm" onsubmit="saveTask()">
         <label for="">Name</label>
-        <input type="text" id="taskName">
+        <input type="text" id="taskName" required>
         <label for="startDate">Start Date</label>
-        <input type="date"id="startDate">
+        <input type="date"id="startDate" required>
         <label for="endDate">End Date</label>
-        <input type="date" id="endDate">
-        <button type="button" onclick="saveTask()">Save</button>
+        <input type="date" id="endDate" required>
+        <button type="submit">Save</button>
         <button type="button" onclick="closeEditWnd()">Close</button>
       </form>
     </div>
