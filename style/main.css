@@ -75,6 +75,39 @@ button{
   width:100%;
 }
 
+.task-list{
+  margin: 30px 0;
+  max-height: 400px;
+  width:400px;
+  overflow: scroll;
+}
+.task-list .item{
+  cursor: pointer;
+  padding: 5px;
+}
+.task-list .item:hover{
+  background: #ddd;
+}
+
+.task-list .item .name{
+  display: inline-block;
+  width:170px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.task-list .item .date{
+  display: inline-block;
+  width: 100px;
+  margin:0 20px;
+}
+.task-list .item i{
+  color: #999;
+  font-size:25px;
+  padding:5px;
+}
+
+
 .mask{
   display:none;
   position: absolute;

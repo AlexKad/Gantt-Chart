@@ -6,11 +6,20 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Gantt Chart</title>
   <link rel="stylesheet" href="style/main.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
   <div class="content">
     <h3>Gantt Chart</h3>
     <button type="button" name="button" onclick="addTask();">Add new task</button>
+    <div class="task-list">
+      <div class="item">
+        <div class="name">Name</div>
+        <div class="date">07/07 - 09/07</div>
+        <i class="fa fa-pencil"></i>
+        <i class="fa fa-remove"></i>
+      </div>
+    </div>
     <div class="chart">
       <svg width="980" height="500"></svg>
     </div>

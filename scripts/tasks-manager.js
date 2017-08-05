@@ -33,12 +33,12 @@ function openTaskWnd(){
 }
 
 function saveTask(){
-  var name = $("#taskName").val();
-  var startDate = $("#startDate").val();
-  var endDate = $("#endDate").val();
+  let name = $("#taskName").val();
+  let startDate = $("#startDate").val();
+  let endDate = $("#endDate").val();
   if(!validate(name, startDate, endDate)) return;
-  var start = new Date(startDate).getUTCDate();
-  var end = new Date(endDate).getUTCDate();
+  let start = new Date(startDate).getUTCDate();
+  let end = new Date(endDate).getUTCDate();
   if(tasks.find(el=> el.id === currentTaskId)){
     let task = tasks.find(el=> el.id === currentTaskId)
     task.name = name;
@@ -68,10 +68,23 @@ function validate(name, startDate, endDate){
 }
 
 function updateChartData(){
-  var minDate = Math.min.apply(null, tasks.map(el => el.start));
-  var maxDate = Math.max.apply(null, tasks.map(el => el.end));
+  let minDate = Math.min.apply(null, tasks.map(el => el.start));
+  let maxDate = Math.max.apply(null, tasks.map(el => el.end));
   let sortedTasks = tasks.sort((a,b)=> a.start > b.start ? 1 : -1);
   updateChart(sortedTasks, minDate, maxDate, editTask);
+  renderChartList(sortedTasks);
+}
+function renderChartList(tasks){
+  $('.task-list').empty();
+  // let list = document.createDocumentFragment();
+  // let item;
+  // for(let i=0; i< tasks.length; i++){
+  //   item = $('div').addClass('item');
+  //   item.append($('div').addClass('name').html(tasks[i].name));
+  //
+  //   list.append(item);
+  // }
+  //$('.task-list').append(list);
 }
 
 function closeEditWnd(){
