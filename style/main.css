@@ -75,11 +75,32 @@ button{
   width:100%;
 }
 
+.sprint-definition{
+  margin:10px 0;
+  margin-bottom:40px;
+}
+.sprint-definition .sprint-name{
+  display: inline-block;
+  padding: 5px;
+  border-bottom: 4px solid #ddd;
+  vertical-align: bottom;
+}
+.sprint-definition input{
+  border: none;
+  border-bottom: 4px solid #ddd;
+  padding:5px;
+  margin-left: 10px;
+  font-size: 14px;
+  width:140px;
+  color:#777;
+}
 .task-list{
   margin: 30px 0;
-  max-height: 400px;
+  max-height: 150px;
   width:400px;
+  border: 1px solid #ddd;
   overflow: scroll;
+  display: none;
 }
 .task-list .item{
   cursor: pointer;

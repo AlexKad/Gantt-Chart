@@ -72,19 +72,21 @@ function updateChartData(){
   let maxDate = Math.max.apply(null, tasks.map(el => el.end));
   let sortedTasks = tasks.sort((a,b)=> a.start > b.start ? 1 : -1);
   updateChart(sortedTasks, minDate, maxDate, editTask);
-  renderChartList(sortedTasks);
+  //renderChartList(sortedTasks);
 }
 function renderChartList(tasks){
   $('.task-list').empty();
-  // let list = document.createDocumentFragment();
-  // let item;
-  // for(let i=0; i< tasks.length; i++){
-  //   item = $('div').addClass('item');
-  //   item.append($('div').addClass('name').html(tasks[i].name));
-  //
-  //   list.append(item);
-  // }
-  //$('.task-list').append(list);
+  $('.task-list').show();
+  let item, name;
+  let df = $(document.createDocumentFragment());
+   for(let i=0; i< tasks.length; i++){
+     item = $('<div class="item"></div>');
+     item = item.append('<div class="name">'+ tasks[i].name+'</div>');
+     item = item.append('<div class="date">07/07 - 09/07</div>');
+     item = item.append('<i class="fa fa-pencil"></i><i class="fa fa-remove"></i>');
+     df.append(item);
+  }
+   $('.task-list').append(df);
 }
 
 function closeEditWnd(){
