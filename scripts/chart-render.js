@@ -60,7 +60,7 @@ function renderNameAxis(scale, svg, width){
    function customYAxis(g) {
      g.call(yAxis);
      g.select(".domain").remove();
-     g.selectAll(".tick text").attr("x", -45).attr("dy", -paddingTop);
+     g.selectAll(".tick text").attr("x", -paddingLeft).attr("dy", -paddingTop);
 
      var lastLine = g.select(".tick:first-of-type");
      var translate = getTranslateValues(lastLine.attr('transform'));
@@ -97,7 +97,9 @@ function renderChart(data, minDate, maxDate, clickFn){
         .attr("y", function(d) { return nameScale(d.name)+paddingTop; })
         .attr("width", function(d) { return dateScale(d.end+1)-dateScale(d.start); })
         .attr("height", barHeight)
-        .on("click", function(d,i) { clickFn(d);});
+        .on("click", function(d,i) { clickFn(d);})
+        .append("svg:title")
+        .text('Click to edit');
 
 }
 

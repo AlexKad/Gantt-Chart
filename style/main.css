@@ -87,7 +87,7 @@ button{
 }
 .sprint-definition input{
   border: none;
-  border-bottom: 4px solid #ddd;
+  /*border-bottom: 4px solid #ddd;*/
   padding:5px;
   margin-left: 10px;
   font-size: 14px;
