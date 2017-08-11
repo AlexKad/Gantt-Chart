@@ -4,10 +4,42 @@ const mask = $('.mask');
 let tasks = [ ];
 let currentTaskId = 1;
 
+let startSprintDate, endSprintDate;
+
 //var minDate = Math.min.apply(null, tasks.map(el => el.start));
 //var maxDate = Math.max.apply(null, tasks.map(el => el.end));
 //renderChart(tasks, minDate, maxDate, editTask);
-
+let timeout;
+function sprintDateChanged(el){
+  if(timeout) {
+        clearTimeout(timeout);
+        timeout = null;
+  }
+  timeout = setTimeout(()=>{ setSprintDate(el.name, el.value)},1000);
+}
+function setSprintDate(name, value){
+  let date = new Date(value);
+  switch (name){
+    case "startDate":
+      if(endSprintDate && date>endSprintDate){
+        alert('Start date should be earlier than end date.');
+      }
+      else startSprintDate = date;
+      break;
+    case "endDate":
+      if(startSprintDate && date<startSprintDate){
+        alert('End date should not be earlier than start date.');
+      }
+      endSprintDate = date;
+      break;
+  }
+  if(startSprintDate && endSprintDate && tasks.length==0){
+    renderDefaultTasks();
+  }
+}
+function renderDefaultTasks(){
+  
+}
 function addTask(id){
   if(tasks.length>0){
     let sortedTasks = tasks.sort((a,b)=> a.id > b.id? -1:1);
