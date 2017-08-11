@@ -15,30 +15,48 @@ function sprintDateChanged(el){
         clearTimeout(timeout);
         timeout = null;
   }
-  timeout = setTimeout(()=>{ setSprintDate(el.name, el.value)},1000);
+  timeout = setTimeout(()=>{ setSprintDate(el.name, el.value)},1500);
 }
 function setSprintDate(name, value){
   let date = new Date(value);
+  date.setDate(date.getUTCDate());
   switch (name){
     case "startDate":
-      if(endSprintDate && date>endSprintDate){
-        alert('Start date should be earlier than end date.');
+      if(endSprintDate && date > endSprintDate){
+        alert('Start date should be earlier than end date. Sprint should be at least 5 days long.');
+      } else if(endSprintDate && !isValidSprintLength(date, endSprintDate)){
+        alert('Sprint should be at least 5 days long.');
       }
       else startSprintDate = date;
       break;
     case "endDate":
-      if(startSprintDate && date<startSprintDate){
-        alert('End date should not be earlier than start date.');
+      if(startSprintDate && date < startSprintDate){
+        alert('End date should not be earlier than start date. Sprint should be at least 5 days long.');
+      } else if(startSprintDate && !isValidSprintLength(startSprintDate, date)){
+        alert('Sprint should be at least 5 days long.');
       }
-      endSprintDate = date;
+      else endSprintDate = date;
       break;
   }
-  if(startSprintDate && endSprintDate && tasks.length==0){
+  if(startSprintDate && endSprintDate && tasks.length == 0){
     renderDefaultTasks();
   }
 }
+function isValidSprintLength(start, end){
+  let endDate = new Date(end);
+  endDate = endDate.setDate(endDate.getDate()-4);
+  return start < endDate;
+}
 function renderDefaultTasks(){
-  
+  let start = new Date(startSprintDate).getDate();
+  let tasks = [
+    { name: 'Task 1', start: start,   end: start+1,  startDate: startSprintDate,   endDate: startSprintDate+1 },
+    { name: 'Task 2', start: start+1, end: start+3,  startDate: startSprintDate+1, endDate: startSprintDate+3 },
+    { name: 'Task 3', start: start+2, end: start+4,  startDate: startSprintDate+2, endDate: startSprintDate+4 },
+  ];
+  let minDate = new Date(startSprintDate).getDate();
+  let maxDate = new Date(endSprintDate).getDate();
+  renderChart(tasks, minDate, maxDate, editTask);
 }
 function addTask(id){
   if(tasks.length>0){
@@ -81,6 +99,7 @@ function saveTask(){
   }
   else{
     tasks.push({ id: currentTaskId, name, startDate, endDate, start, end});
+    currentTaskId++;
   }
   closeEditWnd();
   updateChartData();
