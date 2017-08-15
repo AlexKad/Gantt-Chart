@@ -43,23 +43,21 @@ g.axis{
   font-size: 14px;
 }
 g.tick .btn{
-  opacity: 1;
   height: 20px;
   width: 20px;
   cursor: pointer;
   display: inline;
   margin-right: 5px;
 }
-g.tick:hover .btn{
-  opacity: 1;
-}
+
 g.tick .btn i{
   font-size: 18px;
+  color:#888;
 }
-g.tick .btn i.fa-pencil{
+g.tick:hover .btn i.fa-pencil{
   color: royalblue;
 }
-g.tick .btn i.fa-remove{
+g.tick:hover .btn i.fa-remove{
   color: firebrick;
 }
 
