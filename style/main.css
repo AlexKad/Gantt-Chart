@@ -41,6 +41,7 @@ g.axis{
 
 .axis text{
   font-size: 14px;
+  cursor: default;
 }
 g.tick .btn{
   height: 20px;
