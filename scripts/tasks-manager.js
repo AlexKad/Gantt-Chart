@@ -6,6 +6,11 @@ let currentTaskId = 1;
 
 let startSprintDate, endSprintDate;
 
+//for quick testing purporse
+startSprintDate = new Date(2000,2,2);
+endSprintDate = new Date(2000,2,12);
+renderDefaultTasks();
+
 //var minDate = Math.min.apply(null, tasks.map(el => el.start));
 //var maxDate = Math.max.apply(null, tasks.map(el => el.end));
 //renderChart(tasks, minDate, maxDate, editTask);

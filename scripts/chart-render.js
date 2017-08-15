@@ -1,5 +1,5 @@
 const barHeight = 50;
-const paddingLeft = 60;
+const paddingLeft = 100;
 const paddingTop = 25;
 
 function getTranslateValues(translate){
@@ -51,7 +51,7 @@ function getNameScale(data){
 function renderNameAxis(scale, svg, width){
   var yAxis = d3.axisRight()
                 .scale(scale)
-                .tickSize(width-10);
+                .tickSize(width - barHeight);
   svg.append("g")
      .attr("class", "axis y-axis")
      .attr("transform", "translate("+ paddingLeft +"," + paddingTop*2 + ")")
@@ -60,7 +60,18 @@ function renderNameAxis(scale, svg, width){
    function customYAxis(g) {
      g.call(yAxis);
      g.select(".domain").remove();
-     g.selectAll(".tick text").attr("x", -paddingLeft).attr("dy", -paddingTop);
+     g.selectAll(".tick text")
+          .attr("x", -paddingLeft)
+          .attr("dy", -paddingTop+5);
+
+    let fObj = g.selectAll(".tick")
+                .append('svg:foreignObject')
+                  .attr("x", -paddingLeft + 50)
+                  .attr("y", -barHeight + 15)
+                  .attr("width", 50)
+                  .attr("height", 20);
+    renderEditBtns(fObj, 'fa-pencil', ()=>{console.log('edit clicked!')});
+    renderEditBtns(fObj, 'fa-remove', ()=>{console.log('remove clicked!')});
 
      var lastLine = g.select(".tick:first-of-type");
      var translate = getTranslateValues(lastLine.attr('transform'));
@@ -68,8 +79,16 @@ function renderNameAxis(scale, svg, width){
      g.insert("g",":first-child")
       .attr('class', 'tick')
       .attr("transform", "translate(" + (+translate[0]) + "," + (+translate[1]-barHeight)+")")
-      .append('line').attr("x2", width-10);
+      .append('line').attr("x2", width - barHeight);
    }
+}
+
+function renderEditBtns(fObj, icon, clickFn){
+  let btns = fObj.append("xhtml:div")
+                 .attr("class", 'btn');
+
+  btns.html('<i class="fa '+ icon + '"></i>');
+  btns.on('click', clickFn);
 }
 
 function renderChart(data, minDate, maxDate, clickFn){
