@@ -1,6 +1,6 @@
-const barHeight = 50;
+const barHeight = 120;
 const paddingLeft = 100;
-const paddingTop = 25;
+const paddingTop = barHeight/2;
 
 function getTranslateValues(translate){
   return translate.substring(translate.indexOf("(")+1, translate.indexOf(")")).split(",");
@@ -64,14 +64,14 @@ function renderNameAxis(scale, svg, width){
           .attr("x", -paddingLeft)
           .attr("dy", -paddingTop+5);
 
-    let fObj = g.selectAll(".tick")
-                .append('svg:foreignObject')
-                  .attr("x", -paddingLeft + 50)
-                  .attr("y", -barHeight + 15)
-                  .attr("width", 50)
-                  .attr("height", 20);
-    renderEditBtns(fObj, 'fa-pencil', ()=>{console.log('edit clicked!')});
-    renderEditBtns(fObj, 'fa-remove', ()=>{console.log('remove clicked!')});
+    // let fObj = g.selectAll(".tick")
+    //             .append('svg:foreignObject')
+    //               .attr("x", -paddingLeft + 50)
+    //               .attr("y", -barHeight + 15)
+    //               .attr("width", 50)
+    //               .attr("height", 20);
+    // renderEditBtns(fObj, 'fa-pencil', ()=>{console.log('edit clicked!')});
+    // renderEditBtns(fObj, 'fa-remove', ()=>{console.log('remove clicked!')});
 
      var lastLine = g.select(".tick:first-of-type");
      var translate = getTranslateValues(lastLine.attr('transform'));
