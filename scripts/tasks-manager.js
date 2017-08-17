@@ -8,18 +8,20 @@ let startSprintDate, endSprintDate;
 
 //for quick testing purporse
  startSprintDate = new Date(2000,1,2);
- endSprintDate = new Date(2000,1,12);
- //renderDefaultTasks();
+ endSprintDate = new Date(2000,1,15);
+ renderDefaultTasks();
 
-console.log(filterOutWeekends(startSprintDate, endSprintDate));
+//console.log(filterOutWeekends(startSprintDate, endSprintDate));
 
 function filterOutWeekends(startDate, endDate){
   let filteredDates = [];
    let date = new Date(startDate);
+   let eDate = new Date(endDate);
+   eDate.setDate(eDate.getDate()+1);
 
-   while(date.getTime() != endSprintDate.getTime()){
+   while(date.getTime() != eDate.getTime()){
      if(date.getUTCDay() != 0 && date.getUTCDay() != 6){
-       filteredDates.push(new Date(date));
+       filteredDates.push((new Date(date)).getTime());
      }
      date.setDate(date.getDate()+1);
    }
@@ -67,13 +69,12 @@ function isValidSprintLength(start, end){
 function renderDefaultTasks(){
   let start = new Date(startSprintDate).getDate();
   let tasks = [
-    { name: 'Task 1', start: start,   end: start+1,  startDate: startSprintDate,   endDate: startSprintDate+1 },
-    { name: 'Task 2', start: start+1, end: start+3,  startDate: startSprintDate+1, endDate: startSprintDate+3 },
-    { name: 'Task 3', start: start+2, end: start+4,  startDate: startSprintDate+2, endDate: startSprintDate+4 },
+    { name: 'Task 1', start: start,   end: start+1, length:2, startDate: startSprintDate.getTime(),   endDate: startSprintDate+1 },
+    { name: 'Task 2', start: start+1, end: start+3, length:2, startDate: startSprintDate.getTime(), endDate: startSprintDate+3 },
+    { name: 'Task 3', start: start+2, end: start+4, length:3, startDate: startSprintDate.getTime(), endDate: startSprintDate+4 },
   ];
-  let minDate = new Date(startSprintDate).getDate();
-  let maxDate = new Date(endSprintDate).getDate();
-  renderChart(tasks, minDate, maxDate, editTask);
+  let dates = filterOutWeekends(startSprintDate, endSprintDate);
+  renderChart(tasks, dates, editTask);
 }
 function addTask(id){
   if(tasks.length>0){

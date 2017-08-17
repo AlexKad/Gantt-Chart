@@ -1,4 +1,4 @@
-const barHeight = 120;
+const barHeight = 100;
 const paddingLeft = 100;
 const paddingTop = barHeight/2;
 
@@ -6,37 +6,44 @@ function getTranslateValues(translate){
   return translate.substring(translate.indexOf("(")+1, translate.indexOf(")")).split(",");
 }
 
-function getDateScale(minDate, maxDate, width){
-  var dates = [];
+function getDateScale(dates, width){
   //TODO: bug if last task end date == maxDate
-  for(let i=minDate; i<=maxDate+1; i++){
-    dates.push(i);
-  }
-  var scale = d3.scalePoint()
+  var scale = d3.scaleBand()
                 .domain(dates)
-                .range([0, width-paddingLeft]);
+                .range([0, barHeight*dates.length]);
   return scale;
+}
+
+function displayDate(ms){
+  const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fr', 'Sat'];
+  let date = new Date(ms);
+  let month = date.getUTCMonth()+1;
+  let day = date.getUTCDate();
+  let dayOfTheWeek = weekDays[date.getUTCDay()];
+  return dayOfTheWeek+ ' ' + date.getUTCMonth()+1 +'/' + date.getUTCDate();
 }
 
 function renderDateAxis(scale, svg, height){
   var xAxis = d3.axisBottom()
                 .scale(scale)
-                .tickSize(height);
+                .tickSize(height)
+                .tickFormat(displayDate);
+
   var g = svg.append("g")
             .attr("class", "axis x-axis")
-            .attr("transform", "translate("+ paddingLeft +"," + paddingTop + ")")
+            .attr("transform", "translate("+ paddingLeft/2 +"," + paddingTop + ")")
             .call(customXAxis);
 
   function customXAxis(g) {
     g.call(xAxis);
     g.select(".domain").remove();
-    g.selectAll(".tick text").attr("y", -paddingTop).attr("dx", 30);
+    g.selectAll(".tick text").attr("y", -paddingTop).attr("dx", 50);
 
     var lastLine = g.select(".tick:last-of-type");
     var translate = getTranslateValues(lastLine.attr('transform'));
     g.append("g")
      .attr('class', 'tick')
-     .attr("transform", "translate(" + (+translate[0]+ barHeight) + "," + (+translate[1])+")")
+     .attr("transform", "translate(" + (+translate[0]+ paddingLeft) + "," + (+translate[1])+")")
      .append('line').attr("y2", height);
   }
 }
@@ -51,7 +58,7 @@ function getNameScale(data){
 function renderNameAxis(scale, svg, width){
   var yAxis = d3.axisRight()
                 .scale(scale)
-                .tickSize(width - barHeight);
+                .tickSize(width-paddingLeft);
   svg.append("g")
      .attr("class", "axis y-axis")
      .attr("transform", "translate("+ paddingLeft +"," + paddingTop*2 + ")")
@@ -79,7 +86,7 @@ function renderNameAxis(scale, svg, width){
      g.insert("g",":first-child")
       .attr('class', 'tick')
       .attr("transform", "translate(" + (+translate[0]) + "," + (+translate[1]-barHeight)+")")
-      .append('line').attr("x2", width - barHeight);
+      .append('line').attr("x2", width-paddingLeft);
    }
 }
 
@@ -91,18 +98,18 @@ function renderEditBtns(fObj, icon, clickFn){
   btns.on('click', clickFn);
 }
 
-function renderChart(data, minDate, maxDate, clickFn){
+function renderChart(data, dates, clickFn){
   var svg = d3.select("svg");
   var g = svg.append("g");
 
-  var dateAxisWidth =  barHeight*(maxDate+1-minDate) + barHeight;
+  var dateAxisWidth =  barHeight*dates.length + barHeight;
   var nameAxisHeight = barHeight*data.length;
 
   svg.attr('width', dateAxisWidth + paddingLeft + 10)
      .attr('height', nameAxisHeight + paddingTop + 10);
 
 
-  var dateScale = getDateScale(minDate, maxDate, dateAxisWidth);
+  var dateScale = getDateScale(dates, dateAxisWidth);
   var nameScale = getNameScale(data);
 
   renderDateAxis(dateScale, svg, nameAxisHeight);
@@ -112,9 +119,9 @@ function renderChart(data, minDate, maxDate, clickFn){
       .data(data)
       .enter().append("rect")
         .attr("class", "bar")
-        .attr("x", function(d) { return dateScale(d.start)+paddingLeft; })
+        .attr("x", function(d) { return dateScale(d.startDate)+paddingLeft; })
         .attr("y", function(d) { return nameScale(d.name)+paddingTop; })
-        .attr("width", function(d) { return dateScale(d.end+1)-dateScale(d.start); })
+        .attr("width", function(d) { return d.length*barHeight; })
         .attr("height", barHeight)
         .on("click", function(d,i) { clickFn(d);})
         .append("svg:title")
@@ -122,8 +129,8 @@ function renderChart(data, minDate, maxDate, clickFn){
 
 }
 
-function updateChart(data, minDate, maxDate, clickFn){
+function updateChart(data, dates, clickFn){
   var svg = d3.select("svg");
   svg.selectAll("*").remove();
-  renderChart(data, minDate, maxDate, clickFn);
+  renderChart(data, dates, clickFn);
 }
