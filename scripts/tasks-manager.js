@@ -120,7 +120,7 @@ function saveTask(){
   if(isDefaultSet){
     startSprintDate = new Date(start);
     endSprintDate = new Date( start.setDate(start.getDate() + 14));
-    
+
     setInputDate(startSprintDate, $('input[name=startDate]'));
     setInputDate(endSprintDate, $('input[name=endDate]'));
     isDefaultSet = false;
@@ -133,9 +133,9 @@ function saveTask(){
 
 function setInputDate(date, input){
   let sYear = date.getFullYear();
-  let month = date.getMonth();
+  let month = date.getMonth()+1;
   let sMonth = month>10? month : '0' + month;
-  let day = date.getDate();
+  let day = date.getDate()+1;
   let sDay= day>10? day: '0' + day;
 
   input.val([sYear,sMonth, sDay].join('-'));
@@ -152,8 +152,6 @@ function validate(name, startDate){
 function updateChartData(){
   //let sortedTasks = tasks.sort((a,b)=> a.startDate > b.startDate ? 1 : -1);
   let dates = filterOutWeekends(startSprintDate, endSprintDate);
-  // console.log(dates);
-
   updateChart(tasks, dates, editTask);
   //renderTasksList(sortedTasks);
 }

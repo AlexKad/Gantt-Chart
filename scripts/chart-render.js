@@ -18,7 +18,7 @@ function displayDate(ms){
   const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fr', 'Sat'];
   let date = new Date(ms);
   let month = date.getMonth()+1;
-  let day = date.getDate();
+  let day = date.getDate()+1;
   let dayOfTheWeek = weekDays[date.getDay()];
   return dayOfTheWeek+ ' ' + month +'/' + day;
 }
