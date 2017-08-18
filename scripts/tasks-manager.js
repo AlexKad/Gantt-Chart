@@ -89,8 +89,7 @@ function editTask(task){
   currentTaskId = task.id;
   editWnd.find('.modal-header h3').html('Edit task');
   $("#taskName").val(task.name);
-  $("#startDate").val(task.startDate);
-  $("#endDate").val(task.endDate);
+  setInputDate(new Date(task.startDate), $("#startDate"));
   openTaskWnd();
 }
 
@@ -121,12 +120,25 @@ function saveTask(){
   if(isDefaultSet){
     startSprintDate = new Date(start);
     endSprintDate = new Date( start.setDate(start.getDate() + 14));
+    
+    setInputDate(startSprintDate, $('input[name=startDate]'));
+    setInputDate(endSprintDate, $('input[name=endDate]'));
     isDefaultSet = false;
   }
 
   closeEditWnd();
   updateChartData();
   editForm.trigger('reset');
+}
+
+function setInputDate(date, input){
+  let sYear = date.getFullYear();
+  let month = date.getMonth();
+  let sMonth = month>10? month : '0' + month;
+  let day = date.getDate();
+  let sDay= day>10? day: '0' + day;
+
+  input.val([sYear,sMonth, sDay].join('-'));
 }
 
 function validate(name, startDate){
