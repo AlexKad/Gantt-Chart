@@ -17,10 +17,10 @@ function getDateScale(dates, width){
 function displayDate(ms){
   const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fr', 'Sat'];
   let date = new Date(ms);
-  let month = date.getUTCMonth()+1;
-  let day = date.getUTCDate();
-  let dayOfTheWeek = weekDays[date.getUTCDay()];
-  return dayOfTheWeek+ ' ' + date.getUTCMonth()+1 +'/' + date.getUTCDate();
+  let month = date.getMonth()+1;
+  let day = date.getDate();
+  let dayOfTheWeek = weekDays[date.getDay()];
+  return dayOfTheWeek+ ' ' + month +'/' + day;
 }
 
 function renderDateAxis(scale, svg, height){

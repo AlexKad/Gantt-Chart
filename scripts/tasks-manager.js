@@ -5,10 +5,11 @@ let tasks = [ ];
 let currentTaskId = 1;
 
 let startSprintDate, endSprintDate;
+let isDefaultSet = true;
 
 //for quick testing purporse
- startSprintDate = new Date(2000,1,2);
- endSprintDate = new Date(2000,1,15);
+ startSprintDate = new Date(2000, 1, 2);
+ endSprintDate = new Date(2000, 1, 15);
  renderDefaultTasks();
 
 //console.log(filterOutWeekends(startSprintDate, endSprintDate));
@@ -67,11 +68,10 @@ function isValidSprintLength(start, end){
   return start < endDate;
 }
 function renderDefaultTasks(){
-  let start = new Date(startSprintDate).getDate();
   let tasks = [
-    { name: 'Task 1', start: start,   end: start+1, length:2, startDate: startSprintDate.getTime(),   endDate: startSprintDate+1 },
-    { name: 'Task 2', start: start+1, end: start+3, length:2, startDate: startSprintDate.getTime(), endDate: startSprintDate+3 },
-    { name: 'Task 3', start: start+2, end: start+4, length:3, startDate: startSprintDate.getTime(), endDate: startSprintDate+4 },
+    { name: 'Task 1', startDate: startSprintDate.getTime(), length: 2 },
+    { name: 'Task 2', startDate: startSprintDate.getTime(), length: 2 },
+    { name: 'Task 3', startDate: startSprintDate.getTime(), length: 3 },
   ];
   let dates = filterOutWeekends(startSprintDate, endSprintDate);
   renderChart(tasks, dates, editTask);
@@ -102,33 +102,34 @@ function openTaskWnd(){
 
 function saveTask(){
   let name = $("#taskName").val();
-  let startDate = $("#startDate").val();
-  let endDate = $("#endDate").val();
-  if(!validate(name, startDate, endDate)) return;
-  let start = new Date(startDate).getUTCDate();
-  let end = new Date(endDate).getUTCDate();
+  let startDateStr = $("#startDate").val();
+
+  if(!validate(name, startDate)) return;
+  let start = new Date(startDateStr);
+  startDate = start.getTime()
+
   if(tasks.find(el=> el.id === currentTaskId)){
     let task = tasks.find(el=> el.id === currentTaskId)
     task.name = name;
     task.startDate = startDate;
-    task.endDate = endDate;
-    task.start = start;
-    task.end = end;
+    task.length = 2;
   }
   else{
-    tasks.push({ id: currentTaskId, name, startDate, endDate, start, end});
+    tasks.push({ id: currentTaskId, name, startDate, length: 2 });
     currentTaskId++;
   }
+  if(isDefaultSet){
+    startSprintDate = new Date(start);
+    endSprintDate = new Date( start.setDate(start.getDate() + 14));
+    isDefaultSet = false;
+  }
+
   closeEditWnd();
   updateChartData();
   editForm.trigger('reset');
 }
 
-function validate(name, startDate, endDate){
-  if(startDate > endDate){
-    alert("Start date should be earlier than end date.");
-    return false;
-  }
+function validate(name, startDate){
   if(tasks.find(el => el.name === name && el.id != currentTaskId)){
     alert("Task name should be unique.");
     return false;
@@ -137,13 +138,14 @@ function validate(name, startDate, endDate){
 }
 
 function updateChartData(){
-  let minDate = Math.min.apply(null, tasks.map(el => el.start));
-  let maxDate = Math.max.apply(null, tasks.map(el => el.end));
-  let sortedTasks = tasks.sort((a,b)=> a.start > b.start ? 1 : -1);
-  updateChart(sortedTasks, minDate, maxDate, editTask);
-  //renderChartList(sortedTasks);
+  //let sortedTasks = tasks.sort((a,b)=> a.startDate > b.startDate ? 1 : -1);
+  let dates = filterOutWeekends(startSprintDate, endSprintDate);
+  // console.log(dates);
+
+  updateChart(tasks, dates, editTask);
+  //renderTasksList(sortedTasks);
 }
-function renderChartList(tasks){
+function renderTasksList(tasks){
   $('.task-list').empty();
   $('.task-list').show();
   let item, name;
