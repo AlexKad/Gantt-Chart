@@ -102,6 +102,8 @@ function openTaskWnd(){
 function saveTask(){
   let name = $("#taskName").val();
   let startDateStr = $("#startDate").val();
+  let count = parseInt($("#count").val());
+  let countOpt = $("countOpt").val();
 
   if(!validate(name, startDate)) return;
   let start = new Date(startDateStr);
@@ -111,10 +113,11 @@ function saveTask(){
     let task = tasks.find(el=> el.id === currentTaskId)
     task.name = name;
     task.startDate = startDate;
-    task.length = 2;
+    task.length = count;
+    task.lengthOpt = countOpt;
   }
   else{
-    tasks.push({ id: currentTaskId, name, startDate, length: 2 });
+    tasks.push({ id: currentTaskId, name, startDate, length: count, lengthOpt: countOpt });
     currentTaskId++;
   }
   if(isDefaultSet){
