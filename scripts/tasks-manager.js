@@ -108,7 +108,7 @@ function saveTask(){
   let count = parseInt($("#count").val());
   let countOpt = $("countOpt").val();
 
-  if(!validate(name, start)) return;
+  if(!validate(name, start, count)) return;
   startDate = start.getTime();
 
   if(tasks.find(el=> el.id === currentTaskId)){
@@ -146,7 +146,7 @@ function setInputDate(date, input){
   input.val([sYear,sMonth, sDay].join('-'));
 }
 
-function validate(name, startDate){
+function validate(name, startDate, count){
   if(tasks.find(el => el.name === name && el.id != currentTaskId)){
     alert("Sorry, your task name should be unique.");
     return false;
@@ -154,6 +154,10 @@ function validate(name, startDate){
   let day = startDate.getUTCDay();
   if(day == 0 || day == 6){
     alert("Sorry, weekend is not allowed as a task start date.");
+    return false;
+  }
+  if(count<0 || count>50){
+    alert("Sorry, your task length is incorrect.");
     return false;
   }
   return true;
