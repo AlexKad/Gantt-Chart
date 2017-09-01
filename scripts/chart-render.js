@@ -123,7 +123,7 @@ function renderChart(data, dates, clickFn){
         .attr("x", function(d) { return dateScale(d.startDate)+paddingLeft; })
         .attr("y", function(d) { return nameScale(d.name)+paddingTop; })
         .attr("width", function(d) { return calcWidth(d); })
-        .attr("height", barHeight)
+        .attr("height", function(d) { return calcHeight(d); })
         .on("click", function(d,i) { clickFn(d);})
         .append("svg:title")
         .text('Click to edit');
@@ -137,13 +137,20 @@ function calcWidth(d){
       width = d.length*barHeight;
       break;
     case 'hours':
-      let days = d.length <= workingDayInHours ? 1 : Math.ceil(d.length/workingDayInHours);
+      let days = d.length <= workingDayInHours ? 1 : Math.round(d.length/workingDayInHours);
       width = days*barHeight;
       break;
     default:
       width = d.length*barHeight;
   }
   return width;
+}
+function calcHeight(d){
+  if(d.lengthOpt == 'hours'){
+    if(d.length <= workingDayInHours) return barHeight/workingDayInHours * d.length;
+    //TODO: render separate bar if in hours > workingDayInHours
+  }
+  return barHeight;
 }
 
 function updateChart(data, dates, clickFn){
