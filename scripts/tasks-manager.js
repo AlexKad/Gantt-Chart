@@ -104,12 +104,12 @@ function openTaskWnd(){
 function saveTask(){
   let name = $("#taskName").val();
   let startDateStr = $("#startDate").val();
+  let start = new Date(startDateStr);
   let count = parseInt($("#count").val());
   let countOpt = $("countOpt").val();
 
-  if(!validate(name, startDate)) return;
-  let start = new Date(startDateStr);
-  startDate = start.getTime()
+  if(!validate(name, start)) return;
+  startDate = start.getTime();
 
   if(tasks.find(el=> el.id === currentTaskId)){
     let task = tasks.find(el=> el.id === currentTaskId)
@@ -148,7 +148,12 @@ function setInputDate(date, input){
 
 function validate(name, startDate){
   if(tasks.find(el => el.name === name && el.id != currentTaskId)){
-    alert("Task name should be unique.");
+    alert("Sorry, your task name should be unique.");
+    return false;
+  }
+  let day = startDate.getUTCDay();
+  if(day == 0 || day == 6){
+    alert("Sorry, weekend is not allowed as a task start date.");
     return false;
   }
   return true;
