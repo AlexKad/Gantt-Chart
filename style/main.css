@@ -74,7 +74,6 @@ button{
   left:calc(50% - 150px);
   width:300px;
   padding:20px 40px;
-  padding-bottom: 50px;
   border: 2px solid #ddd;
   background: #fff;
   z-index:1000;
@@ -92,8 +91,19 @@ button{
   margin-left:0;
   padding: 5px;
   width:100%;
+  box-sizing: border-box;
 }
-
+.modal-body .input-group{
+  display: inline-block;
+  width: 100%;
+}
+.modal-body select{
+  height: 30px;
+}
+.modal-body .buttons{
+  margin-top: 15px;
+  float: right;
+}
 .sprint-definition{
   margin:10px 0;
   margin-bottom:40px;

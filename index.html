@@ -34,12 +34,21 @@
     </div>
     <div class="modal-body">
       <form action="#" id="editForm" onsubmit="saveTask()">
-        <label for="">Name</label>
+        <label for="taskName">Name</label>
         <input type="text" id="taskName" required>
         <label for="startDate">Start Date</label>
         <input type="date"id="startDate" required>
-        <button type="submit">Save</button>
-        <button type="button" onclick="closeEditWnd()">Close</button>
+        <div class="input-group">
+          <input type="count"id="count" maxlength="2" size="2" style="width:40px;" required>
+          <select class="" name="" required>
+            <option value="days">Days</option>
+            <option value="hours">Hours</option>
+          </select>
+        </div>
+        <div class="buttons">
+          <button type="submit">Save</button>
+          <button type="button" onclick="closeEditWnd()">Close</button>
+        </div>
       </form>
     </div>
   </div>
