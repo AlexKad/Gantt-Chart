@@ -90,6 +90,8 @@ function editTask(task){
   editWnd.find('.modal-header h3').html('Edit task');
   $("#taskName").val(task.name);
   setInputDate(new Date(task.startDate), $("#startDate"));
+  $("#count").val(task.length);
+  $("countOpt").val(task.lengthOpt);
   openTaskWnd();
 }
 
@@ -175,5 +177,6 @@ function renderTasksList(tasks){
 
 function closeEditWnd(){
   editWnd.hide();
+  editForm.trigger('reset');
   mask.hide();
 }
