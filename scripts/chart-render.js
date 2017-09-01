@@ -1,6 +1,7 @@
 const barHeight = 100;
 const paddingLeft = 100;
 const paddingTop = barHeight/2;
+const workingDayInHours = 8;
 
 function getTranslateValues(translate){
   return translate.substring(translate.indexOf("(")+1, translate.indexOf(")")).split(",");
@@ -121,12 +122,28 @@ function renderChart(data, dates, clickFn){
         .attr("class", "bar")
         .attr("x", function(d) { return dateScale(d.startDate)+paddingLeft; })
         .attr("y", function(d) { return nameScale(d.name)+paddingTop; })
-        .attr("width", function(d) { return d.length*barHeight; })
+        .attr("width", function(d) { return calcWidth(d); })
         .attr("height", barHeight)
         .on("click", function(d,i) { clickFn(d);})
         .append("svg:title")
         .text('Click to edit');
 
+}
+
+function calcWidth(d){
+  let width = 0;
+  switch(d.lengthOpt){
+    case 'days':
+      width = d.length*barHeight;
+      break;
+    case 'hours':
+      let days = d.length <= workingDayInHours ? 1 : Math.ceil(d.length/workingDayInHours);
+      width = days*barHeight;
+      break;
+    default:
+      width = d.length*barHeight;
+  }
+  return width;
 }
 
 function updateChart(data, dates, clickFn){

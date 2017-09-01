@@ -106,7 +106,7 @@ function saveTask(){
   let startDateStr = $("#startDate").val();
   let start = new Date(startDateStr);
   let count = parseInt($("#count").val());
-  let countOpt = $("countOpt").val();
+  let countOpt = $("#countOpt").val();
 
   if(!validate(name, start, count)) return;
   startDate = start.getTime();
