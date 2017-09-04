@@ -122,55 +122,11 @@ function renderChart(data, dates, clickFn){
         .attr("class", "bar")
         .attr("x", function(d) { return dateScale(d.startDate)+paddingLeft; })
         .attr("y", function(d) { return nameScale(d.name)+paddingTop; })
-        .attr("width", function(d) { return calcWidth(d); })
-        .attr("height", function(d) { return calcHeight(d); })
+        .attr("width", function(d) { return d.length*barHeight })
+        .attr("height", barHeight)
         .on("click", function(d,i) { clickFn(d);})
         .append("svg:title")
         .text('Click to edit');
-        
-  if(additionalHours && additionalHours.length){
-    g.selectAll(".additional.bar")
-        .data(additionalHours)
-        .enter().append("rect")
-          .attr("class", "bar")
-          .attr("x", function(d) { return dateScale(d.startDate)+paddingLeft+calcWidth(d); })
-          .attr("y", function(d) { return nameScale(d.name)+paddingTop; })
-          .attr("width", function(d) { return barHeight; })
-          .attr("height", function(d) { return 0.5* barHeight; })
-          .on("click", function(d,i) { clickFn(d);})
-          .append("svg:title")
-          .text('additional');
-
-         additionalHours= [];
-      }
-
-}
-let additionalHours = [];
-
-function calcWidth(d){
-  let width = 0;
-  switch(d.lengthOpt){
-    case 'days':
-      width = d.length*barHeight;
-      break;
-    case 'hours':
-      let days = d.length <= workingDayInHours ? 1 : Math.round(d.length/workingDayInHours);
-      width = days*barHeight;
-      if(d.length > workingDayInHours && days*workingDayInHours < d.length){
-        additionalHours.push(d);
-      }
-      break;
-    default:
-      width = d.length*barHeight;
-  }
-  return width;
-}
-function calcHeight(d){
-  if(d.lengthOpt == 'hours'){
-    if(d.length <= workingDayInHours) return barHeight/workingDayInHours * d.length;
-    //TODO: render separate bar if in hours > workingDayInHours
-  }
-  return barHeight;
 }
 
 function updateChart(data, dates, clickFn){

@@ -3,7 +3,6 @@ const editForm = $('#editForm');
 const mask = $('.mask');
 let tasks = [ ];
 let currentTaskId = 1;
-
 let startSprintDate, endSprintDate;
 let isDefaultSet = true;
 
@@ -115,11 +114,10 @@ function saveTask(){
     let task = tasks.find(el=> el.id === currentTaskId)
     task.name = name;
     task.startDate = startDate;
-    task.length = count;
-    task.lengthOpt = countOpt;
+    task.length = calcLengthInDays(count, countOpt);
   }
   else{
-    tasks.push({ id: currentTaskId, name, startDate, length: count, lengthOpt: countOpt });
+    tasks.push({ id: currentTaskId, name, startDate, length: calcLengthInDays(count, countOpt) });
     currentTaskId++;
   }
   if(isDefaultSet){
@@ -134,6 +132,12 @@ function saveTask(){
   closeEditWnd();
   updateChartData();
   editForm.trigger('reset');
+}
+function calcLengthInDays(length, opt){
+  if(opt == 'hours'){
+      length = length/workingDayInHours;
+  }
+  return length;
 }
 
 function setInputDate(date, input){
