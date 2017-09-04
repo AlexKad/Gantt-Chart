@@ -127,8 +127,25 @@ function renderChart(data, dates, clickFn){
         .on("click", function(d,i) { clickFn(d);})
         .append("svg:title")
         .text('Click to edit');
+        
+  if(additionalHours && additionalHours.length){
+    g.selectAll(".additional.bar")
+        .data(additionalHours)
+        .enter().append("rect")
+          .attr("class", "bar")
+          .attr("x", function(d) { return dateScale(d.startDate)+paddingLeft+calcWidth(d); })
+          .attr("y", function(d) { return nameScale(d.name)+paddingTop; })
+          .attr("width", function(d) { return barHeight; })
+          .attr("height", function(d) { return 0.5* barHeight; })
+          .on("click", function(d,i) { clickFn(d);})
+          .append("svg:title")
+          .text('additional');
+
+         additionalHours= [];
+      }
 
 }
+let additionalHours = [];
 
 function calcWidth(d){
   let width = 0;
@@ -139,6 +156,9 @@ function calcWidth(d){
     case 'hours':
       let days = d.length <= workingDayInHours ? 1 : Math.round(d.length/workingDayInHours);
       width = days*barHeight;
+      if(d.length > workingDayInHours && days*workingDayInHours < d.length){
+        additionalHours.push(d);
+      }
       break;
     default:
       width = d.length*barHeight;
