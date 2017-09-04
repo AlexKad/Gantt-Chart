@@ -115,18 +115,30 @@ function renderChart(data, dates, clickFn){
 
   renderDateAxis(dateScale, svg, nameAxisHeight);
   renderNameAxis(nameScale, svg, dateAxisWidth);
+  renderBars(g, dateScale, nameScale, data, clickFn);
+}
 
-  g.selectAll(".bar")
-      .data(data)
-      .enter().append("rect")
-        .attr("class", "bar")
-        .attr("x", function(d) { return dateScale(d.startDate)+paddingLeft; })
-        .attr("y", function(d) { return nameScale(d.name)+paddingTop; })
-        .attr("width", function(d) { return d.length*barHeight })
-        .attr("height", barHeight)
-        .on("click", function(d,i) { clickFn(d);})
-        .append("svg:title")
-        .text('Click to edit');
+function renderBars(g, dateScale, nameScale,data, clickFn){
+  var bar = g.selectAll("g")
+             .data(data)
+             .enter().append("g");
+
+      bar.append("rect")
+         .attr("class", "bar")
+         .attr("x", function(d) { return dateScale(d.startDate)+paddingLeft; })
+         .attr("y", function(d) { return nameScale(d.name)+paddingTop; })
+         .attr("width", function(d) { return d.length*barHeight })
+         .attr("height", barHeight)
+         .on("click", function(d,i) { clickFn(d);})
+         .append("svg:title")
+         .text('Click to edit');
+
+      bar.append("text")
+          .attr("x", function(d) { return dateScale(d.startDate)+paddingLeft + (d.length*barHeight)/2; })
+          .attr("y", function(d) { return nameScale(d.name)+paddingTop; })
+          .attr("dy", barHeight/2)
+          .attr("text-anchor", "middle")
+          .text(function(d) { return d.name; });
 }
 
 function updateChart(data, dates, clickFn){
