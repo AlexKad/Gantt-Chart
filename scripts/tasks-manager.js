@@ -68,9 +68,9 @@ function isValidSprintLength(start, end){
 }
 function renderDefaultTasks(){
   let tasks = [
-    { name: 'Task 1', startDate: startSprintDate.getTime(), length: 2 },
-    { name: 'Task 2', startDate: startSprintDate.getTime(), length: 2 },
-    { name: 'Task 3', startDate: startSprintDate.getTime(), length: 3 },
+    { name: 'Task 1', startDate: startSprintDate.getTime(), length: 2, assignTo: 'Jane A.'},
+    { name: 'Task 2', startDate: startSprintDate.getTime(), length: 2, assignTo: 'Brain D.' },
+    { name: 'Task 3', startDate: startSprintDate.getTime(), length: 3, assignTo: 'Richard R.'},
   ];
   let dates = filterOutWeekends(startSprintDate, endSprintDate);
   renderChart(tasks, dates, editTask);
@@ -106,6 +106,7 @@ function saveTask(){
   let start = new Date(startDateStr);
   let count = parseInt($("#count").val());
   let countOpt = $("#countOpt").val();
+  let assignTo = $("#assignTo").val() || '';
 
   if(!validate(name, start, count)) return;
   startDate = start.getTime();
@@ -115,9 +116,10 @@ function saveTask(){
     task.name = name;
     task.startDate = startDate;
     task.length = calcLengthInDays(count, countOpt);
+    task.assignTo = assignTo;
   }
   else{
-    tasks.push({ id: currentTaskId, name, startDate, length: calcLengthInDays(count, countOpt) });
+    tasks.push({ id: currentTaskId, name, startDate, length: calcLengthInDays(count, countOpt), assignTo });
     currentTaskId++;
   }
   if(isDefaultSet){

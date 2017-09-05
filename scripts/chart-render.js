@@ -136,9 +136,16 @@ function renderBars(g, dateScale, nameScale,data, clickFn){
       bar.append("text")
           .attr("x", function(d) { return dateScale(d.startDate)+paddingLeft + (d.length*barHeight)/2; })
           .attr("y", function(d) { return nameScale(d.name)+paddingTop; })
-          .attr("dy", barHeight/2)
+          .attr("dy", barHeight/2-10)
           .attr("text-anchor", "middle")
           .text(function(d) { return d.name; });
+
+      bar.append("text")
+              .attr("x", function(d) { return dateScale(d.startDate)+paddingLeft + (d.length*barHeight)/2; })
+              .attr("y", function(d) { return nameScale(d.name)+paddingTop; })
+              .attr("dy", barHeight/2+10)
+              .attr("text-anchor", "middle")
+              .text(function(d) { return d.assignTo; });
 }
 
 function updateChart(data, dates, clickFn){
