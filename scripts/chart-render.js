@@ -136,10 +136,10 @@ function renderBars(g, dateScale, nameScale,data, clickFn){
       bar.append("text")
           .attr("x", function(d) { return dateScale(d.startDate)+paddingLeft + (d.length*barHeight)/2; })
           .attr("y", function(d) { return nameScale(d.name)+paddingTop; })
-          .attr("dy", barHeight/2-10)
+         .attr("dy", barHeight/2-10)
           .attr("text-anchor", "middle")
           .text(function(d) { return d.name + (d.assignTo? ' ' + d.assignTo : ''); })
-          .call(wrap, barHeight);
+          .call(wrap);
 
       // bar.append("text")
       //         .attr("x", function(d) { return dateScale(d.startDate)+paddingLeft + (d.length*barHeight)/2; })
@@ -149,9 +149,11 @@ function renderBars(g, dateScale, nameScale,data, clickFn){
       //         .text(function(d) { return d.assignTo; });
 }
 
-function wrap(text, width) {
+function wrap(text) {
   text.each(function() {
     let text = d3.select(this),
+        bar = d3.select(this.parentNode).selectAll("rect"),
+        width = bar.attr("width"),
         words = text.text().split(/\s+/).reverse(),
         word,
         line = [],
