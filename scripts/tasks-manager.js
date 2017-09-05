@@ -68,7 +68,7 @@ function isValidSprintLength(start, end){
 }
 function renderDefaultTasks(){
   let tasks = [
-    { name: 'Task 1', startDate: startSprintDate.getTime(), length: 2, assignTo: 'Jane A.'},
+    { name: 'Task 1111111', startDate: startSprintDate.getTime(), length: 1, assignTo: 'Jane A.'},
     { name: 'Task 2', startDate: startSprintDate.getTime(), length: 2, assignTo: 'Brain D.' },
     { name: 'Task 3', startDate: startSprintDate.getTime(), length: 3, assignTo: 'Richard R.'},
   ];
