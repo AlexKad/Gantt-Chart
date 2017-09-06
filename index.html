@@ -20,6 +20,7 @@
     </div>
     <div class="task-list">
     </div>
+    <button type="button" name="button" onclick="addStory();">Add new story</button>
     <button type="button" name="button" onclick="addTask();">Add new task</button>
 
     <div class="chart">
@@ -50,7 +51,25 @@
         <input type="text" id="assignTo">
         <div class="buttons">
           <button type="submit">Save</button>
-          <button type="button" onclick="closeEditWnd()">Close</button>
+          <button type="button" onclick="closeWnd($('#editTaskWnd'),$('#editForm'))">Close</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal" id="editStoryWnd">
+    <div class="modal-header" id="addStoryForm">
+      <h3>Add new sprint story</h3>
+      <i></i>
+    </div>
+    <div class="modal-body">
+      <form action="#" id="editStoryForm" onsubmit="saveStory()">
+        <label for="tstoryName">Name</label>
+        <input type="text" id="storyName" required>
+
+        <div class="buttons">
+          <button type="submit">Save</button>
+          <button type="button" onclick="closeWnd($('#editStoryWnd'),$('#editStoryForm'))">Close</button>
         </div>
       </form>
     </div>
