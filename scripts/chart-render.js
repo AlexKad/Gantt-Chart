@@ -121,7 +121,7 @@ function renderChart(data, dates, clickFn){
 function renderBars(g, dateScale, nameScale,data, clickFn){
   var bar = g.selectAll("g")
              .data(data)
-             .enter().append("g");
+             .enter().append("g").attr("class", "bar-task");
 
       bar.append("rect")
          .attr("class", "bar")
@@ -136,9 +136,9 @@ function renderBars(g, dateScale, nameScale,data, clickFn){
       bar.append("text")
           .attr("x", function(d) { return dateScale(d.startDate)+paddingLeft + (d.length*barHeight)/2; })
           .attr("y", function(d) { return nameScale(d.name)+paddingTop; })
-         .attr("dy", barHeight/2-10)
+          .attr("dy", 20)
           .attr("text-anchor", "middle")
-          .text(function(d) { return d.name + (d.assignTo? ' ' + d.assignTo : ''); })
+          .text(function(d) { return d.name + (d.assignTo? ' <br/> ' + d.assignTo : ''); })
           .call(wrap);
 
       // bar.append("text")
@@ -167,10 +167,10 @@ function wrap(text) {
     while (word = words.pop()) {
       line.push(word);
       tspan.text(line.join(" "));
-      if (tspan.node().getComputedTextLength() > width) {
+      if (tspan.node().getComputedTextLength() > width || word == '<br/>') {
         line.pop();
         tspan.text(line.join(" "));
-        line = [word];
+        line = word == '<br/>'? [] : [word];
         tspan = text.append("tspan").attr("x", x).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy ).text(word);
       }
     }

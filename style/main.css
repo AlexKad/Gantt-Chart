@@ -13,6 +13,9 @@ body{
 .chart svg{
   margin:10px;
 }
+.bar-task text{
+  fill:#fff;
+}
 .bar {
   fill: #26a526;
   cursor: pointer;
