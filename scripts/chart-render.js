@@ -99,34 +99,34 @@ function renderEditBtns(fObj, icon, clickFn){
   btns.on('click', clickFn);
 }
 
-function renderChart(data, dates, clickFn){
+function renderChart(stories, tasks, dates, clickFn){
   var svg = d3.select("svg");
   var g = svg.append("g");
 
   var dateAxisWidth =  barHeight*dates.length + barHeight;
-  var nameAxisHeight = barHeight*data.length;
+  var nameAxisHeight = barHeight*stories.length;
 
   svg.attr('width', dateAxisWidth + paddingLeft + 10)
      .attr('height', nameAxisHeight + paddingTop + 10);
 
 
   var dateScale = getDateScale(dates, dateAxisWidth);
-  var nameScale = getNameScale(data);
+  var nameScale = getNameScale(stories);
 
   renderDateAxis(dateScale, svg, nameAxisHeight);
   renderNameAxis(nameScale, svg, dateAxisWidth);
-  renderBars(g, dateScale, nameScale, data, clickFn);
+  renderBars(g, dateScale, nameScale, tasks, clickFn);
 }
 
-function renderBars(g, dateScale, nameScale,data, clickFn){
+function renderBars(g, dateScale, nameScale, tasks, clickFn){
   var bar = g.selectAll("g")
-             .data(data)
+             .data(tasks)
              .enter().append("g").attr("class", "bar-task");
 
       bar.append("rect")
          .attr("class", "bar")
          .attr("x", function(d) { return dateScale(d.startDate)+paddingLeft; })
-         .attr("y", function(d) { return nameScale(d.name)+paddingTop; })
+         .attr("y", function(d) { return nameScale(d.story)+paddingTop; })
          .attr("width", function(d) { return d.length*barHeight })
          .attr("height", barHeight)
          .on("click", function(d,i) { clickFn(d);})
@@ -135,7 +135,7 @@ function renderBars(g, dateScale, nameScale,data, clickFn){
 
       bar.append("text")
           .attr("x", function(d) { return dateScale(d.startDate)+paddingLeft + (d.length*barHeight)/2; })
-          .attr("y", function(d) { return nameScale(d.name)+paddingTop; })
+          .attr("y", function(d) { return nameScale(d.story)+paddingTop; })
           .attr("dy", 20)
           .attr("text-anchor", "middle")
           .text(function(d) { return d.name + (d.assignTo? ' <br/> ' + d.assignTo : ''); })

@@ -68,12 +68,15 @@ function isValidSprintLength(start, end){
 }
 function renderDefaultTasks(){
   let tasks = [
-    { name: 'Task 1', startDate: startSprintDate.getTime(), length: 1, assignTo: 'Jane A.'},
-    { name: 'Task 2', startDate: startSprintDate.getTime(), length: 2, assignTo: 'Brain D.' },
-    { name: 'Task 3', startDate: startSprintDate.getTime(), length: 3, assignTo: 'Richard R.'},
+    { story: 'Story 1', name: 'Task 1', startDate: startSprintDate.getTime(), length: 1, assignTo: 'Jane A.'},
+    { story: 'Story 2', name: 'Task 2', startDate: startSprintDate.getTime(), length: 2, assignTo: 'Brain D.' },
+    { story: 'Story 3', name: 'Task 3', startDate: startSprintDate.getTime(), length: 3, assignTo: 'Richard R.'},
   ];
+  let stories = [
+    { name: 'Story 1'}, { name: 'Story 2'}, { name: 'Story 3'}
+  ]
   let dates = filterOutWeekends(startSprintDate, endSprintDate);
-  renderChart(tasks, dates, editTask);
+  renderChart(stories, tasks, dates, editTask);
 }
 function addTask(id){
   if(tasks.length>0){
