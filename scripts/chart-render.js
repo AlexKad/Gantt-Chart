@@ -51,18 +51,23 @@ function renderDateAxis(scale, svg, height){
 
 function getNameScale(data){
   var scale = d3.scaleBand()
-                .domain(data.map(function(d) { return d.name; }))
+                .domain(data.map(function(d) { return d.id; }))
                 .range([ 0, barHeight*data.length]);
   return scale;
 }
-
-function renderNameAxis(scale, svg, width){
+function getStoryNameById(stories, id){
+  let story = stories.filter(el=> el.id == id);
+  if(story)return story[0].name;
+  else return '';
+}
+function renderNameAxis(stories, scale, svg, width){
   var yAxis = d3.axisRight()
                 .scale(scale)
-                .tickSize(width-paddingLeft);
+                .tickSize(width-paddingLeft)
+                .tickFormat(function(d){ return getStoryNameById(stories, d) });
   svg.append("g")
      .attr("class", "axis y-axis")
-     .attr("transform", "translate("+ paddingLeft +"," + paddingTop*2 + ")")
+     .attr("transform", "translate("+ paddingLeft + "," + paddingTop*2 + ")")
      .call(customYAxis);
 
    function customYAxis(g) {
@@ -71,6 +76,7 @@ function renderNameAxis(scale, svg, width){
      g.selectAll(".tick text")
           .attr("x", -paddingLeft)
           .attr("dy", -paddingTop+5);
+          //.on("click", function(d,i) { console.log(d);});
 
     // let fObj = g.selectAll(".tick")
     //             .append('svg:foreignObject')
@@ -114,7 +120,7 @@ function renderChart(stories, tasks, dates, clickFn){
   var nameScale = getNameScale(stories);
 
   renderDateAxis(dateScale, svg, nameAxisHeight);
-  renderNameAxis(nameScale, svg, dateAxisWidth);
+  renderNameAxis(stories, nameScale, svg, dateAxisWidth);
   renderBars(g, dateScale, nameScale, tasks, clickFn);
 }
 
@@ -126,7 +132,7 @@ function renderBars(g, dateScale, nameScale, tasks, clickFn){
       bar.append("rect")
          .attr("class", "bar")
          .attr("x", function(d) { return dateScale(d.startDate)+paddingLeft; })
-         .attr("y", function(d) { return nameScale(d.story)+paddingTop; })
+         .attr("y", function(d) { return nameScale(d.storyId)+paddingTop; })
          .attr("width", function(d) { return d.length*barHeight })
          .attr("height", barHeight)
          .on("click", function(d,i) { clickFn(d);})
@@ -135,7 +141,7 @@ function renderBars(g, dateScale, nameScale, tasks, clickFn){
 
       bar.append("text")
           .attr("x", function(d) { return dateScale(d.startDate)+paddingLeft + (d.length*barHeight)/2; })
-          .attr("y", function(d) { return nameScale(d.story)+paddingTop; })
+          .attr("y", function(d) { return nameScale(d.storyId)+paddingTop; })
           .attr("dy", 20)
           .attr("text-anchor", "middle")
           .text(function(d) { return d.name + (d.assignTo? ' <br/> ' + d.assignTo : ''); })

@@ -70,19 +70,20 @@ function isValidSprintLength(start, end){
   endDate = endDate.setDate(endDate.getDate()-4);
   return start < endDate;
 }
+
 function renderDefaultTasks(){
   let tasks = [
-    { story: 'Story 1', name: 'Task 1', startDate: startSprintDate.getTime(), length: 1, assignTo: 'Jane A.'},
-    { story: 'Story 2', name: 'Task 2', startDate: startSprintDate.getTime(), length: 2, assignTo: 'Brain D.' },
-    { story: 'Story 3', name: 'Task 3', startDate: startSprintDate.getTime(), length: 3, assignTo: 'Richard R.'},
+    { storyId: 1, name: 'Task 1', startDate: startSprintDate.getTime(), length: 1, assignTo: 'Jane A.'},
+    { storyId: 2, name: 'Task 2', startDate: startSprintDate.getTime(), length: 2, assignTo: 'Brain D.' },
+    { storyId: 3, name: 'Task 3', startDate: startSprintDate.getTime(), length: 3, assignTo: 'Richard R.'},
   ];
   let stories = [
-    { name: 'Story 1'}, { name: 'Story 2'}, { name: 'Story 3'}
+    { id: 1, name: 'Story 1'}, { id:2, name: 'Story 2'}, { id:3, name: 'Story 3'}
   ]
   let dates = filterOutWeekends(startSprintDate, endSprintDate);
   renderChart(stories, tasks, dates, editTask);
 }
-function addTask(id){
+function addTask(){
   if(tasks.length>0){
     let sortedTasks = tasks.sort((a,b)=> a.id > b.id? -1:1);
     currentTaskId = sortedTasks[0].id + 1;
@@ -90,12 +91,21 @@ function addTask(id){
   editWnd.find('.modal-header h3').html('Add new task');
   openWnd(editWnd, $('taskName'));
 }
-function addStory(id){
+function addStory(){
   if(stories.length>0){
     let sortedStories = tasks.sort((a,b)=> a.id > b.id? -1:1);
-    currentStoryd = sortedStories[0].id + 1;
+    currentStoryId = sortedStories[0].id + 1;
   }
   editStoryWnd.find('.modal-header h3').html('Add new story');
+  openWnd(editStoryWnd, $('#storyName'));
+}
+function editStory(story){
+  editStoryWnd.find('.modal-header h3').html('Edit story');
+  $("#storyName").val(story.name);
+  if(tasks.length>0){
+    let currentTasks = tasks.filter(el=> {return el.storyId == story.id});
+    if(currentTasks.length > 0) renderTasksList(currentTasks, $('#tasksList'));
+  }
   openWnd(editStoryWnd, $('#storyName'));
 }
 
@@ -148,7 +158,7 @@ function saveTask(){
     task.assignTo = assignTo;
   }
   else{
-    tasks.push({ id: currentTaskId, name, startDate, length: calcLengthInDays(count, countOpt), assignTo });
+    tasks.push({ storyId: currentStoryId, id: currentTaskId, name, startDate, length: calcLengthInDays(count, countOpt), assignTo });
     currentTaskId++;
   }
   if(isDefaultSet){
@@ -204,9 +214,9 @@ function updateChartData(){
   updateChart(stories, tasks, dates, editTask);
   //renderTasksList(sortedTasks);
 }
-function renderTasksList(tasks){
-  $('.task-list').empty();
-  $('.task-list').show();
+function renderTasksList(tasks, container){
+  container.empty();
+  //container.show();
   let item, name;
   let df = $(document.createDocumentFragment());
    for(let i=0; i< tasks.length; i++){
@@ -216,7 +226,7 @@ function renderTasksList(tasks){
      item = item.append('<i class="fa fa-pencil"></i><i class="fa fa-remove"></i>');
      df.append(item);
   }
-   $('.task-list').append(df);
+   container.append(df);
 }
 
 function closeWnd(wnd, form){
