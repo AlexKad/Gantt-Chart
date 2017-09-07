@@ -60,7 +60,7 @@ function getStoryNameById(stories, id){
   if(story)return story[0].name;
   else return '';
 }
-function renderNameAxis(stories, scale, svg, width){
+function renderNameAxis(stories, scale, svg, width, clickStoryFn){
   var yAxis = d3.axisRight()
                 .scale(scale)
                 .tickSize(width-paddingLeft)
@@ -75,8 +75,8 @@ function renderNameAxis(stories, scale, svg, width){
      g.select(".domain").remove();
      g.selectAll(".tick text")
           .attr("x", -paddingLeft)
-          .attr("dy", -paddingTop+5);
-          //.on("click", function(d,i) { console.log(d);});
+          .attr("dy", -paddingTop+5)
+          .on("click", function(d,i) { clickStoryFn(d);});
 
     // let fObj = g.selectAll(".tick")
     //             .append('svg:foreignObject')
@@ -105,7 +105,7 @@ function renderEditBtns(fObj, icon, clickFn){
   btns.on('click', clickFn);
 }
 
-function renderChart(stories, tasks, dates, clickFn){
+function renderChart(stories, tasks, dates, clickBarFn, clickStoryFn){
   var svg = d3.select("svg");
   var g = svg.append("g");
 
@@ -120,8 +120,8 @@ function renderChart(stories, tasks, dates, clickFn){
   var nameScale = getNameScale(stories);
 
   renderDateAxis(dateScale, svg, nameAxisHeight);
-  renderNameAxis(stories, nameScale, svg, dateAxisWidth);
-  renderBars(g, dateScale, nameScale, tasks, clickFn);
+  renderNameAxis(stories, nameScale, svg, dateAxisWidth, clickStoryFn);
+  renderBars(g, dateScale, nameScale, tasks, clickBarFn);
 }
 
 function renderBars(g, dateScale, nameScale, tasks, clickFn){
@@ -176,8 +176,8 @@ function wrap(text) {
   });
 }
 
-function updateChart(data, dates, clickFn){
+function updateChart(stories, data, dates, clickBarFn, clickStoryFn){
   var svg = d3.select("svg");
   svg.selectAll("*").remove();
-  renderChart(data, dates, clickFn);
+  renderChart(stories, data, dates, clickBarFn, clickStoryFn);
 }

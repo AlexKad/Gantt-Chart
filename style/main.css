@@ -81,6 +81,9 @@ button{
   background: #fff;
   z-index:1000;
 }
+.modal-top{
+  z-index: 2000;
+}
 
 .modal-header{
   margin-bottom:30px;
@@ -126,35 +129,30 @@ button{
   width:140px;
   color:#777;
 }
-.task-list{
-  margin: 30px 0;
-  max-height: 150px;
-  width:400px;
+.tasks-list{
+  margin: 20px 0;
+  width:100%;
   border: 1px solid #ddd;
   overflow: scroll;
-  display: none;
 }
-.task-list .item{
+.tasks-list .item{
   cursor: pointer;
   padding: 5px;
 }
-.task-list .item:hover{
+.tasks-list .item:hover{
   background: #ddd;
 }
 
-.task-list .item .name{
+.tasks-list .item .name{
   display: inline-block;
-  width:170px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.task-list .item .date{
+.tasks-list .item .date{
   display: inline-block;
-  width: 100px;
-  margin:0 20px;
 }
-.task-list .item i{
+.tasks-list .item i{
   color: #999;
   font-size:25px;
   padding:5px;
