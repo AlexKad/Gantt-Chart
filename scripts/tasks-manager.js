@@ -225,14 +225,12 @@ function updateChartData(){
 }
 function renderTasksList(tasks, container){
   container.empty();
-  //container.show();
   let item, name;
   let df = $(document.createDocumentFragment());
    for(let i=0; i< tasks.length; i++){
      item = $('<div class="item"></div>');
      item = item.append('<div class="name">'+ tasks[i].name+'</div>');
-     item = item.append('<div class="date">07/07 - 09/07</div>');
-     item = item.append('<i class="fa fa-remove"></i>');
+     item = item.append('<div class="buttons"><i class="fa fa-pencil"><i class="fa fa-remove"></i></div>');
      df.append(item);
   }
    container.append(df);
