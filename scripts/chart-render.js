@@ -75,17 +75,17 @@ function renderNameAxis(stories, scale, svg, width, clickStoryFn){
      g.select(".domain").remove();
      g.selectAll(".tick text")
           .attr("x", -paddingLeft)
-          .attr("dy", -paddingTop+5)
-          .on("click", function(d,i) { clickStoryFn(d);});
+          .attr("dy", -paddingTop+5);
+          //.on("click", function(d,i) { clickStoryFn(d);});
 
-    // let fObj = g.selectAll(".tick")
-    //             .append('svg:foreignObject')
-    //               .attr("x", -paddingLeft + 50)
-    //               .attr("y", -barHeight + 15)
-    //               .attr("width", 50)
-    //               .attr("height", 20);
-    // renderEditBtns(fObj, 'fa-pencil', ()=>{console.log('edit clicked!')});
-    // renderEditBtns(fObj, 'fa-remove', ()=>{console.log('remove clicked!')});
+    let fObj = g.selectAll(".tick")
+                .append('svg:foreignObject')
+                  .attr("x", -paddingLeft + 50)
+                  .attr("y", -barHeight + 40 )
+                  .attr("width", 50)
+                  .attr("height", 20);
+    renderEditBtns(fObj, 'fa-pencil', clickStoryFn);
+    renderEditBtns(fObj, 'fa-remove', ()=>{console.log('remove clicked!')});
 
      var lastLine = g.select(".tick:first-of-type");
      var translate = getTranslateValues(lastLine.attr('transform'));
@@ -102,7 +102,7 @@ function renderEditBtns(fObj, icon, clickFn){
                  .attr("class", 'btn');
 
   btns.html('<i class="fa '+ icon + '"></i>');
-  btns.on('click', clickFn);
+  btns.on('click', function(d,i){ clickFn(d);});
 }
 
 function renderChart(stories, tasks, dates, clickBarFn, clickStoryFn){

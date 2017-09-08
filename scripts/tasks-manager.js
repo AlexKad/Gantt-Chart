@@ -15,23 +15,6 @@ let isDefaultSet = true;
  endSprintDate = new Date(2000, 1, 15);
  renderDefaultTasks();
 
-//console.log(filterOutWeekends(startSprintDate, endSprintDate));
-
-function filterOutWeekends(startDate, endDate){
-  let filteredDates = [];
-   let date = new Date(startDate);
-   let eDate = new Date(endDate);
-   eDate.setDate(eDate.getDate()+1);
-
-   while(date.getTime() != eDate.getTime()){
-     if(date.getUTCDay() != 0 && date.getUTCDay() != 6){
-       filteredDates.push((new Date(date)).getTime());
-     }
-     date.setDate(date.getDate()+1);
-   }
-   return filteredDates;
-}
-
 let timeout;
 function sprintDateChanged(el){
   if(timeout) {
@@ -70,6 +53,20 @@ function isValidSprintLength(start, end){
   endDate = endDate.setDate(endDate.getDate()-4);
   return start < endDate;
 }
+function filterOutWeekends(startDate, endDate){
+  let filteredDates = [];
+   let date = new Date(startDate);
+   let eDate = new Date(endDate);
+   eDate.setDate(eDate.getDate()+1);
+
+   while(date.getTime() != eDate.getTime()){
+     if(date.getUTCDay() != 0 && date.getUTCDay() != 6){
+       filteredDates.push((new Date(date)).getTime());
+     }
+     date.setDate(date.getDate()+1);
+   }
+   return filteredDates;
+}
 
 function renderDefaultTasks(){
   let tasks = [
@@ -83,6 +80,7 @@ function renderDefaultTasks(){
   let dates = filterOutWeekends(startSprintDate, endSprintDate);
   renderChart(stories, tasks, dates, editTask, editStory);
 }
+
 function addTask(){
   if(tasks.length>0){
     let sortedTasks = tasks.sort((a,b)=> a.id > b.id? -1:1);
@@ -105,6 +103,7 @@ function addStory(){
   editStoryWnd.find('.modal-header h3').html('Add new story');
   openWnd(editStoryWnd, $('#storyName'));
 }
+
 function editStory(id){
   let story = stories.find(el=>el.id==id);
   if(!story || isDefaultSet) return;
@@ -118,8 +117,8 @@ function editStory(id){
   renderTasksList(currentStoryTasks, $('#tasksList'));
   openWnd(editStoryWnd, $('#storyName'));
 }
-
 function editTask(task){
+  if(isDefaultSet) return;
   currentTaskId = task.id;
   editWnd.find('.modal-header h3').html('Edit task');
   $("#taskName").val(task.name);
@@ -128,11 +127,13 @@ function editTask(task){
   $("countOpt").val(task.lengthOpt);
   openWnd(editWnd, $("#taskName"));
 }
+
 function openWnd(wnd, focusInput){
   wnd.show();
   if(focusInput) focusInput.focus();
   mask.show();
 }
+
 function saveStory(){
   let name = $("#storyName").val();
   if(stories.find(el=> el.id === currentStoryId)){
@@ -147,7 +148,6 @@ function saveStory(){
   editStoryForm.trigger('reset');
   currentStoryId = null;
 }
-
 function saveTask(){
   let name = $("#taskName").val();
   let startDateStr = $("#startDate").val();
@@ -170,27 +170,27 @@ function saveTask(){
     tasks.push({ storyId: currentStoryId, id: currentTaskId, name, startDate, length: calcLengthInDays(count, countOpt), assignTo });
   }
 
-  if(isDefaultSet){
-    startSprintDate = new Date(start);
-    endSprintDate = new Date( start.setDate(start.getDate() + 14));
-
-    setInputDate(startSprintDate, $('input[name=startDate]'));
-    setInputDate(endSprintDate, $('input[name=endDate]'));
-    isDefaultSet = false;
-    currentTaskId = null;
-  }
+  // if(isDefaultSet){
+  //   startSprintDate = new Date(start);
+  //   endSprintDate = new Date( start.setDate(start.getDate() + 14));
+  //
+  //   setInputDate(startSprintDate, $('input[name=startDate]'));
+  //   setInputDate(endSprintDate, $('input[name=endDate]'));
+  //   isDefaultSet = false;
+  //   currentTaskId = null;
+  // }
 
   closeWnd(editWnd, editForm);
-  //updateChartData();
+  if(!currentStoryId) updateChartData();
   editForm.trigger('reset');
 }
+
 function calcLengthInDays(length, opt){
   if(opt == 'hours'){
       length = length/workingDayInHours;
   }
   return length;
 }
-
 function setInputDate(date, input){
   let sYear = date.getFullYear();
   let month = date.getMonth()+1;
@@ -200,7 +200,6 @@ function setInputDate(date, input){
 
   input.val([sYear,sMonth, sDay].join('-'));
 }
-
 function validate(name, startDate, count){
   if(tasks.find(el => el.name === name && el.id != currentTaskId)){
     alert("Sorry, your task name should be unique.");
