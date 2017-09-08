@@ -170,15 +170,15 @@ function saveTask(){
     tasks.push({ storyId: currentStoryId, id: currentTaskId, name, startDate, length: calcLengthInDays(count, countOpt), assignTo });
   }
 
-  // if(isDefaultSet){
-  //   startSprintDate = new Date(start);
-  //   endSprintDate = new Date( start.setDate(start.getDate() + 14));
-  //
-  //   setInputDate(startSprintDate, $('input[name=startDate]'));
-  //   setInputDate(endSprintDate, $('input[name=endDate]'));
-  //   isDefaultSet = false;
-  //   currentTaskId = null;
-  // }
+  if(isDefaultSet){
+    startSprintDate = new Date(start);
+    endSprintDate = new Date( start.setDate(start.getDate() + 14));
+
+    setInputDate(startSprintDate, $('input[name=startDate]'));
+    setInputDate(endSprintDate, $('input[name=endDate]'));
+    isDefaultSet = false;
+    currentTaskId = null;
+  }
 
   closeWnd(editWnd, editForm);
   if(!currentStoryId) updateChartData();
