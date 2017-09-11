@@ -81,17 +81,6 @@ function renderDefaultTasks(){
   renderChart(stories, tasks, dates, editTask, editStory);
 }
 
-function addTask(){
-  if(tasks.length>0){
-    let sortedTasks = tasks.sort((a,b)=> a.id > b.id? -1:1);
-    currentTaskId = sortedTasks[0].id + 1;
-  }
-  else{
-    currentTaskId = 1;
-  }
-  editWnd.find('.modal-header h3').html('Add new task');
-  openWnd(editWnd, $('taskName'));
-}
 function addStory(){
   if(stories.length>0){
     let sortedStories = stories.sort((a,b)=> a.id > b.id? -1:1);
@@ -117,6 +106,25 @@ function editStory(id){
   renderTasksList(currentStoryTasks, $('#tasksList'));
   openWnd(editStoryWnd, $('#storyName'));
 }
+function deleteStory(id){
+  let story = stories.find(el=> el.id == id);
+  if(!story) return;
+  if(tasks.length>0){
+    tasks = tasks.filter(el => { return el.storyId != id });
+  }
+  stories = stories.filter(el => { return el.id != id });
+}
+function addTask(){
+  if(tasks.length>0){
+    let sortedTasks = tasks.sort((a,b)=> a.id > b.id? -1:1);
+    currentTaskId = sortedTasks[0].id + 1;
+  }
+  else{
+    currentTaskId = 1;
+  }
+  editWnd.find('.modal-header h3').html('Add new task');
+  openWnd(editWnd, $('taskName'));
+}
 function editTask(task){
   if(isDefaultSet) return;
   currentTaskId = task.id;
@@ -126,6 +134,9 @@ function editTask(task){
   $("#count").val(task.length);
   $("countOpt").val(task.lengthOpt);
   openWnd(editWnd, $("#taskName"));
+}
+function deleteTask(id){
+  tasks = tasks.filter(el => { return el.id != id });
 }
 
 function openWnd(wnd, focusInput){
@@ -181,7 +192,13 @@ function saveTask(){
   }
 
   closeWnd(editWnd, editForm);
-  if(!currentStoryId) updateChartData();
+  if(!currentStoryId){
+    updateChartData();
+  }
+  else{
+    let currentStoryTasks = tasks.filter(el=> el.storyId == currentStoryId);
+    renderTasksList(currentStoryTasks, $('#tasksList'));
+  }
   editForm.trigger('reset');
 }
 
