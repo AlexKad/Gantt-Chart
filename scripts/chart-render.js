@@ -60,7 +60,7 @@ function getStoryNameById(stories, id){
   if(story)return story[0].name;
   else return '';
 }
-function renderNameAxis(stories, scale, svg, width, clickStoryFn){
+function renderNameAxis(stories, scale, svg, width, clickStoryFn, removeStoryFn){
   var yAxis = d3.axisRight()
                 .scale(scale)
                 .tickSize(width-paddingLeft)
@@ -85,7 +85,7 @@ function renderNameAxis(stories, scale, svg, width, clickStoryFn){
                   .attr("width", 50)
                   .attr("height", 20);
     renderEditBtns(fObj, 'fa-pencil', clickStoryFn);
-    renderEditBtns(fObj, 'fa-remove', ()=>{console.log('remove clicked!')});
+    renderEditBtns(fObj, 'fa-remove', removeStoryFn);
 
      var lastLine = g.select(".tick:first-of-type");
      var translate = getTranslateValues(lastLine.attr('transform'));
@@ -105,7 +105,7 @@ function renderEditBtns(fObj, icon, clickFn){
   btns.on('click', function(d,i){ clickFn(d);});
 }
 
-function renderChart(stories, tasks, dates, clickBarFn, clickStoryFn){
+function renderChart(stories, tasks, dates, clickBarFn, clickStoryFn, removeStoryFn){
   var svg = d3.select("svg");
   var g = svg.append("g");
 
@@ -120,7 +120,7 @@ function renderChart(stories, tasks, dates, clickBarFn, clickStoryFn){
   var nameScale = getNameScale(stories);
 
   renderDateAxis(dateScale, svg, nameAxisHeight);
-  renderNameAxis(stories, nameScale, svg, dateAxisWidth, clickStoryFn);
+  renderNameAxis(stories, nameScale, svg, dateAxisWidth, clickStoryFn, removeStoryFn);
   renderBars(g, dateScale, nameScale, tasks, clickBarFn);
 }
 
@@ -135,7 +135,7 @@ function renderBars(g, dateScale, nameScale, tasks, clickFn){
          .attr("y", function(d) { return nameScale(d.storyId)+paddingTop; })
          .attr("width", function(d) { return d.length*barHeight })
          .attr("height", barHeight)
-         .on("click", function(d,i) { clickFn(d);})
+         .on("click", function(d,i) { clickFn(d.id);})
          .append("svg:title")
          .text('Click to edit');
 
@@ -176,8 +176,8 @@ function wrap(text) {
   });
 }
 
-function updateChart(stories, data, dates, clickBarFn, clickStoryFn){
+function updateChart(stories, data, dates, clickBarFn, clickStoryFn, removeStoryFn){
   var svg = d3.select("svg");
   svg.selectAll("*").remove();
-  renderChart(stories, data, dates, clickBarFn, clickStoryFn);
+  renderChart(stories, data, dates, clickBarFn, clickStoryFn, removeStoryFn);
 }

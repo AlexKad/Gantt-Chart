@@ -78,7 +78,7 @@ function renderDefaultTasks(){
     { id: 1, name: 'Story 1'}, { id:2, name: 'Story 2'}, { id:3, name: 'Story 3'}
   ]
   let dates = filterOutWeekends(startSprintDate, endSprintDate);
-  renderChart(stories, tasks, dates, editTask, editStory);
+  renderChart(stories, tasks, dates, editTask, editStory, removeStory);
 }
 
 function addStory(){
@@ -106,13 +106,18 @@ function editStory(id){
   renderTasksList(currentStoryTasks, $('#tasksList'));
   openWnd(editStoryWnd, $('#storyName'));
 }
-function deleteStory(id){
+function removeStory(id){
   let story = stories.find(el=> el.id == id);
   if(!story) return;
-  if(tasks.length>0){
-    tasks = tasks.filter(el => { return el.storyId != id });
+
+  let text = `Are you sure you want to remove ${story.name} task ?`;
+  if (confirm(text) == true) {
+    if(tasks.length>0){
+      tasks = tasks.filter(el => { return el.storyId != id });
+    }
+    stories = stories.filter(el => { return el.id != id });
+    updateChartData();
   }
-  stories = stories.filter(el => { return el.id != id });
 }
 
 function addTask(){
@@ -126,8 +131,9 @@ function addTask(){
   editWnd.find('.modal-header h3').html('Add new task');
   openWnd(editWnd, $('taskName'));
 }
-function editTask(task){
-  if(isDefaultSet) return;
+function editTask(id){
+  let task = tasks.find(el=> el.id == id);
+  if(!task || isDefaultSet) return;
   currentTaskId = task.id;
   editWnd.find('.modal-header h3').html('Edit task');
   $("#taskName").val(task.name);
@@ -136,8 +142,20 @@ function editTask(task){
   $("countOpt").val(task.lengthOpt);
   openWnd(editWnd, $("#taskName"));
 }
-function deleteTask(id){
-  tasks = tasks.filter(el => { return el.id != id });
+function removeTask(id){
+  let task = tasks.find(el=> el.id == id);
+  if(!tasks) return;
+  let text = `Are you sure you want to remove ${task.name} task ?`;
+  if (confirm(text) == true) {
+      tasks = tasks.filter(el => { return el.id != id });
+      if(!currentStoryId){
+        updateChartData();
+      }
+      else{
+        let currentStoryTasks = tasks.filter(el=> el.storyId == currentStoryId);
+        renderTasksList(currentStoryTasks, $('#tasksList'));
+      }
+  }
 }
 
 function openWnd(wnd, focusInput){
@@ -239,7 +257,7 @@ function validate(name, startDate, count){
 function updateChartData(){
   //let sortedTasks = tasks.sort((a,b)=> a.startDate > b.startDate ? 1 : -1);
   let dates = filterOutWeekends(startSprintDate, endSprintDate);
-  updateChart(stories, tasks, dates, editTask, editStory);
+  updateChart(stories, tasks, dates, editTask, editStory, removeStory);
   //renderTasksList(sortedTasks);
 }
 function renderTasksList(tasks, container){
@@ -248,8 +266,8 @@ function renderTasksList(tasks, container){
   let df = $(document.createDocumentFragment());
    for(let i=0; i< tasks.length; i++){
      item = $('<div class="item"></div>');
-     item = item.append('<div class="name">'+ tasks[i].name+'</div>');
-     item = item.append('<div class="buttons"><i class="fa fa-pencil"><i class="fa fa-remove"></i></div>');
+     item = item.append(`<div class="name">${tasks[i].name}</div>`);
+     item = item.append(`<div class="buttons"><i class="fa fa-pencil" onclick="editTask(${tasks[i].id})"><i class="fa fa-remove" onclick="removeTask(${tasks[i].id})"></i></div>`);
      df.append(item);
   }
    container.append(df);
