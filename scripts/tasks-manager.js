@@ -96,6 +96,7 @@ function addStory(){
 function editStory(id){
   let story = stories.find(el=>el.id==id);
   if(!story || isDefaultSet) return;
+  currentStoryId = id;
   editStoryWnd.find('.modal-header h3').html('Edit story');
   $("#storyName").val(story.name);
   if(tasks.length>0){
@@ -154,6 +155,7 @@ function saveStory(){
   else{
     stories.push({ id: currentStoryId, name });
   }
+  isDefaultSet = false;
   closeWnd(editStoryWnd, editStoryForm);
   updateChartData();
   editStoryForm.trigger('reset');
