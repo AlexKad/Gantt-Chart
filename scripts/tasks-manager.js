@@ -92,7 +92,6 @@ function addStory(){
   editStoryWnd.find('.modal-header h3').html('Add new story');
   openWnd(editStoryWnd, $('#storyName'));
 }
-
 function editStory(id){
   let story = stories.find(el=>el.id==id);
   if(!story || isDefaultSet) return;
@@ -115,6 +114,7 @@ function deleteStory(id){
   }
   stories = stories.filter(el => { return el.id != id });
 }
+
 function addTask(){
   if(tasks.length>0){
     let sortedTasks = tasks.sort((a,b)=> a.id > b.id? -1:1);
