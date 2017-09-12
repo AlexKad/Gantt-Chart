@@ -141,6 +141,7 @@ function editTask(id){
   setInputDate(new Date(task.startDate), $("#startDate"));
   $("#count").val(task.length);
   $("countOpt").val(task.lengthOpt);
+  $('#assignTo').val(task.assignTo);
   openWnd(editWnd, $("#taskName"));
 }
 function removeTask(id){
