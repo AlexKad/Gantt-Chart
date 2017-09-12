@@ -18,8 +18,8 @@ let isDefaultSet = true;
 let timeout;
 function sprintDateChanged(el){
   if(timeout) {
-        clearTimeout(timeout);
-        timeout = null;
+      clearTimeout(timeout);
+      timeout = null;
   }
   timeout = setTimeout(()=>{ setSprintDate(el.name, el.value)},1500);
 }
@@ -90,6 +90,7 @@ function addStory(){
      currentStoryId = 1;
   }
   editStoryWnd.find('.modal-header h3').html('Add new story');
+  $('#tasksList').empty();
   openWnd(editStoryWnd, $('#storyName'));
 }
 function editStory(id){
@@ -238,10 +239,10 @@ function setInputDate(date, input){
   input.val([sYear,sMonth, sDay].join('-'));
 }
 function validate(name, startDate, count){
-  if(tasks.find(el => el.name === name && el.id != currentTaskId)){
-    alert("Sorry, your task name should be unique.");
-    return false;
-  }
+  // if(tasks.find(el => el.name === name && el.id != currentTaskId)){
+  //   alert("Sorry, your task name should be unique.");
+  //   return false;
+  // }
   let day = startDate.getUTCDay();
   if(day == 0 || day == 6){
     alert("Sorry, weekend is not allowed as a task start date.");
@@ -255,10 +256,8 @@ function validate(name, startDate, count){
 }
 
 function updateChartData(){
-  //let sortedTasks = tasks.sort((a,b)=> a.startDate > b.startDate ? 1 : -1);
   let dates = filterOutWeekends(startSprintDate, endSprintDate);
   updateChart(stories, tasks, dates, editTask, editStory, removeStory);
-  //renderTasksList(sortedTasks);
 }
 function renderTasksList(tasks, container){
   container.empty();
