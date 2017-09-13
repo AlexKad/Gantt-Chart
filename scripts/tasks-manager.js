@@ -75,7 +75,7 @@ function renderDefaultTasks(){
     { storyId: 3, name: 'Task 3', startDate: startSprintDate.getTime(), length: 3, assignTo: 'Richard R.'},
   ];
   let stories = [
-    { id: 1, name: 'Story 1'}, { id:2, name: 'Story 2'}, { id:3, name: 'Story 3'}
+    { id: 1, name: 'Story 1'}, { id: 2, name: 'Story 2'}, { id: 3, name: 'Story 3'}
   ]
   let dates = filterOutWeekends(startSprintDate, endSprintDate);
   renderChart(stories, tasks, dates, editTask, editStory, removeStory);
@@ -190,7 +190,7 @@ function saveTask(){
   let assignTo = $("#assignTo").val() || '';
 
   if(!validate(name, start, count)) return;
-  startDate = start.getTime();
+  startDate = start.getTime() + start.getTimezoneOffset()*60000;
 
   if(tasks.find(el=> el.id === currentTaskId)){
     let task = tasks.find(el=> el.id === currentTaskId)
@@ -204,7 +204,8 @@ function saveTask(){
   }
 
   if(isDefaultSet){
-    startSprintDate = new Date(start);
+    startSprintDate = new Date(startDate);
+    start = new Date(startDate);
     endSprintDate = new Date( start.setDate(start.getDate() + 14));
 
     setInputDate(startSprintDate, $('input[name=startDate]'));
@@ -234,7 +235,7 @@ function setInputDate(date, input){
   let sYear = date.getFullYear();
   let month = date.getMonth()+1;
   let sMonth = month>10? month : '0' + month;
-  let day = date.getDate()+1;
+  let day = date.getDate();
   let sDay= day>10? day: '0' + day;
 
   input.val([sYear,sMonth, sDay].join('-'));
