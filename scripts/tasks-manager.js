@@ -10,6 +10,24 @@ let currentTaskId = null;
 let startSprintDate, endSprintDate;
 let isDefaultSet = true;
 
+Array.prototype.groupBy = function(keyField) {
+    var groups = {};
+    this.forEach(function(el) {
+        var key = el[keyField];
+        if (key in groups == false) {
+            groups[key] = [];
+        }
+        groups[key].push(el);
+    });
+    return Object.keys(groups).map(function(key) {
+        return {
+            key: key,
+            values: groups[key]
+        };
+    });
+};
+
+
 //for quick testing purporse
  startSprintDate = new Date(2000, 1, 2);
  endSprintDate = new Date(2000, 1, 15);
@@ -259,6 +277,7 @@ function validate(name, startDate, count){
 
 function updateChartData(){
   let dates = filterOutWeekends(startSprintDate, endSprintDate);
+  calculateTasksHeightInStory(tasks);
   updateChart(stories, tasks, dates, editTask, editStory, removeStory);
 }
 function renderTasksList(tasks, container){
@@ -272,6 +291,32 @@ function renderTasksList(tasks, container){
      df.append(item);
   }
    container.append(df);
+}
+function calculateTasksHeightInStory(tasks){
+  let groups = tasks.groupBy('storyId');
+  groups.forEach(el=>{
+    findIntersection(el);
+  });
+}
+function findIntersection(group){
+  if(group.values.length>1){
+    let tasks = group.values.sort((a,b)=> { return a.startDate - b.startDate });
+    let intersections =[], arr = [tasks[0]];
+    let max = tasks[0].startDate+tasks[0].length*1000*3600*24;
+
+    for(let i=1; i< tasks.length; i++){
+        if(tasks[i].startDate< max){
+          arr.push(tasks[i]);
+        }
+        else{
+          intersections.push(arr);
+          arr=[tasks[i]];
+        }
+        max = tasks[i].startDate+tasks[i].length*1000*3600*24;
+    }
+    intersections.push(arr);
+    console.log(intersections);
+  }
 }
 
 function closeWnd(wnd, form){
