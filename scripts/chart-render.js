@@ -132,20 +132,25 @@ function renderBars(g, dateScale, nameScale, tasks, clickFn){
       bar.append("rect")
          .attr("class", "bar")
          .attr("x", function(d) { return dateScale(d.startDate)+paddingLeft; })
-         .attr("y", function(d) { return nameScale(d.storyId)+paddingTop; })
+         .attr("y", function(d) { return calcTopPosition(d, nameScale, paddingTop); })
          .attr("width", function(d) { return d.length*barHeight })
-         .attr("height", barHeight)
+         .attr("height", function(d) { if(d.height) return d.height*barHeight; else return barHeight })
          .on("click", function(d,i) { clickFn(d.id);})
          .append("svg:title")
          .text('Click to edit');
 
       bar.append("text")
           .attr("x", function(d) { return dateScale(d.startDate)+paddingLeft + (d.length*barHeight)/2; })
-          .attr("y", function(d) { return nameScale(d.storyId)+paddingTop; })
+          .attr("y", function(d) { return calcTopPosition(d, nameScale, paddingTop); })
           .attr("dy", 20)
           .attr("text-anchor", "middle")
           .text(function(d) { return d.name + (d.assignTo? ' <br/> ' + d.assignTo : ''); })
           .call(wrap);
+}
+function calcTopPosition(d, nameScale, paddingTop){
+  let top = nameScale(d.storyId) + paddingTop;
+  if(d.top) top+=d.top*barHeight;
+  return top;
 }
 
 function wrap(text) {
