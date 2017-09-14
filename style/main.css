@@ -107,9 +107,6 @@ button{
 .modal-body select{
   height: 30px;
 }
-.modal-body select.story{
-  width:100%;
-}
 .modal-body .buttons{
   margin-top: 15px;
   float: right;

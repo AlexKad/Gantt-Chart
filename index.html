@@ -21,7 +21,6 @@
     <div class="task-list">
     </div>
     <button type="button" name="button" onclick="addStory();">Add new story</button>
-    <button type="button" name="button" onclick="addTask();">Add new task</button>
 
     <div class="chart">
       <svg></svg>
@@ -47,11 +46,6 @@
           </select>
           <small><i>* working</i></small>
         </div>
-        <div id="storyInput">
-          <label for="assocStory">Story</label>
-          <select id="assocStory" class="story">
-          </select>
-        </div>
         <label for="assignTo">Assign to</label>
         <input type="text" id="assignTo">
         <div class="buttons">
@@ -73,7 +67,7 @@
         <input type="text" id="storyName" required>
         <div class="tasks">
           <div class="tasks-list" id="tasksList"></div>
-          <button type="button" name="button" onclick="addTask();">Add new task</button>
+          <button type="button" name="button" onclick="addTask();">Add task</button>
         </div>
         <div class="buttons">
           <button type="submit">Save</button>

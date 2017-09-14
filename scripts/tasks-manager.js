@@ -147,7 +147,6 @@ function addTask(){
   else{
     currentTaskId = 1;
   }
-  $('#storyInput').hide();
   editWnd.find('.modal-header h3').html('Add new task');
   openWnd(editWnd, $('taskName'));
 }
@@ -155,16 +154,6 @@ function editTask(id){
   let task = tasks.find(el=> el.id == id);
   if(!task || isDefaultSet) return;
   currentTaskId = task.id;
-  if(currentStoryId){
-      $('#storyInput').hide();
-  }
-  else{
-    $('#assocStory').html('');
-    $.each(stories, function(index, item) {
-      $('#assocStory').append(new Option(item.name, item.id));
-    });
-    $('#storyInput').show();
-  }
   editWnd.find('.modal-header h3').html('Edit task');
   $("#taskName").val(task.name);
   setInputDate(new Date(task.startDate), $("#startDate"));
