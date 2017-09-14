@@ -99,12 +99,16 @@ button{
   width:100%;
   box-sizing: border-box;
 }
+
 .modal-body .input-group{
   display: inline-block;
   width: 100%;
 }
 .modal-body select{
   height: 30px;
+}
+.modal-body select.story{
+  width:100%;
 }
 .modal-body .buttons{
   margin-top: 15px;
