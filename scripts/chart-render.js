@@ -2,6 +2,7 @@ const barHeight = 100;
 const paddingLeft = 100;
 const paddingTop = barHeight/2;
 const workingDayInHours = 8;
+const barColors = ['#26a526', '#20b2aa', '#3d61ce', '#4ea2a5'];
 
 function getTranslateValues(translate){
   return translate.substring(translate.indexOf("(")+1, translate.indexOf(")")).split(",");
@@ -135,6 +136,7 @@ function renderBars(g, dateScale, nameScale, tasks, clickFn){
          .attr("y", function(d) { return calcTopPosition(d, nameScale, paddingTop); })
          .attr("width", function(d) { return d.length*barHeight })
          .attr("height", function(d) { if(d.height) return d.height*barHeight; else return barHeight })
+         .attr("fill", function(d) { (!d.top) ? barColors[0] : barColors[1]; })
          .on("click", function(d,i) { clickFn(d.id);})
          .append("svg:title")
          .text('Click to edit');

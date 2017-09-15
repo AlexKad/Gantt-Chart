@@ -252,9 +252,9 @@ function calcLengthInDays(length, opt){
 function setInputDate(date, input){
   let sYear = date.getFullYear();
   let month = date.getMonth()+1;
-  let sMonth = month>10? month : '0' + month;
+  let sMonth = month>=10? month : '0' + month;
   let day = date.getDate();
-  let sDay= day>10? day: '0' + day;
+  let sDay= day>=10? day: '0' + day;
 
   input.val([sYear,sMonth, sDay].join('-'));
 }
