@@ -136,7 +136,7 @@ function renderBars(g, dateScale, nameScale, tasks, clickFn){
          .attr("y", function(d) { return calcTopPosition(d, nameScale, paddingTop); })
          .attr("width", function(d) { return d.length*barHeight })
          .attr("height", function(d) { if(d.height) return d.height*barHeight; else return barHeight })
-         .attr("fill", function(d) { (!d.top) ? barColors[0] : barColors[1]; })
+         .attr("fill", function(d) { return (d.top && d.top>0) ? barColors[1] : barColors[0]; })
          .on("click", function(d,i) { clickFn(d.id);})
          .append("svg:title")
          .text('Click to edit');

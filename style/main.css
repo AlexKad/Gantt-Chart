@@ -17,7 +17,7 @@ body{
   fill:#fff;
 }
 .bar {
-  fill: #26a526;
+  /*fill: #26a526;*/
   cursor: pointer;
 }
 .bar:hover {
