@@ -3,6 +3,7 @@ const paddingLeft = 100;
 const paddingTop = barHeight/2;
 const workingDayInHours = 8;
 const barColors = ['#26a526', '#20b2aa', '#3d61ce', '#4ea2a5'];
+const defaultColor = '#26a526';
 
 function getTranslateValues(translate){
   return translate.substring(translate.indexOf("(")+1, translate.indexOf(")")).split(",");
@@ -136,7 +137,7 @@ function renderBars(g, dateScale, nameScale, tasks, clickFn){
          .attr("y", function(d) { return calcTopPosition(d, nameScale, paddingTop); })
          .attr("width", function(d) { return d.length*barHeight })
          .attr("height", function(d) { if(d.height) return d.height*barHeight; else return barHeight })
-         .attr("fill", function(d) { return (d.top && d.top>0) ? barColors[1] : barColors[0]; })
+         .attr("fill", function(d) { return getColor(d) })
          .on("click", function(d,i) { clickFn(d.id);})
          .append("svg:title")
          .text('Click to edit');
@@ -153,6 +154,14 @@ function calcTopPosition(d, nameScale, paddingTop){
   let top = nameScale(d.storyId) + paddingTop;
   if(d.top) top+=d.top*barHeight;
   return top;
+}
+function getColor(d){
+  if(d.top && d.top>0 && d.height){
+    let items = Math.ceil(1/d.height);
+    return barColors[Math.ceil(d.top*items)];
+  }else{
+    return defaultColor;
+  }
 }
 
 function wrap(text) {
