@@ -277,6 +277,7 @@ function validate(name, startDate, count){
 
 function updateChartData(){
   let dates = filterOutWeekends(startSprintDate, endSprintDate);
+  tasks = tasks.sort((a,b)=> a.startDate-b.startDate);
   tasks = calculateTasksHeightInStory(tasks);
   updateChart(stories, tasks, dates, editTask, editStory, removeStory);
 }
