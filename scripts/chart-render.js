@@ -147,13 +147,21 @@ function renderBars(g, dateScale, nameScale, tasks, clickFn){
           .attr("y", function(d) { return calcTopPosition(d, nameScale, paddingTop); })
           .attr("dy", 20)
           .attr("text-anchor", "middle")
-          .text(function(d) { return d.name + (d.assignTo? ' <br/> ' + d.assignTo : ''); })
+          .text(function(d) { return getText(d); })
           .call(wrap);
 }
 function calcTopPosition(d, nameScale, paddingTop){
   let top = nameScale(d.storyId) + paddingTop;
   if(d.top) top+=d.top*barHeight;
   return top;
+}
+function getText(d){
+  let text = d.name;
+  if(d.assignTo){
+    if(!d.height) text+= ' <br/>';
+    text = text + ' ' + d.assignTo;
+  }
+  return text;
 }
 function getColor(d){
   if(d.top && d.top>0 && d.height){
