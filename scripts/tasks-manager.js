@@ -29,9 +29,33 @@ Array.prototype.groupBy = function(keyField) {
 
 
 //for quick testing purporse
- startSprintDate = new Date(2000, 1, 2);
- endSprintDate = new Date(2000, 1, 15);
+ startSprintDate = new Date(2017, 1, 2);
+ endSprintDate = new Date(2017, 1, 15);
  renderDefaultTasks();
+
+ function renderDefaultTasks(){
+
+   let tasks = [
+     { storyId: 1, id: 1, name: 'Create login page', startDate: (new Date(2017, 1, 3)).getTime(), length: 3, assignTo: 'Jane A.'},
+     { storyId: 1, id: 2, name: 'Update db model', startDate: (new Date(2017, 1, 2)).getTime(), length: 2, assignTo: 'Bob M.'},
+     { storyId: 1, id: 3, name: 'Test user login/logout', startDate: (new Date(2017, 1, 3)).getTime(), length: 3, assignTo: 'Brain D.' },
+     { storyId: 2, id: 4, name: 'Backup user data', startDate: (new Date(2017, 1, 6)).getTime(), length: 3, assignTo: 'Richard R.'},
+     { storyId: 2, id: 5, name: 'Test backup', startDate: (new Date(2017, 1, 7)).getTime(), length: 3, assignTo: 'Brain D.'},
+     { storyId: 3, id: 5, name: 'Create images viewer', startDate: (new Date(2017, 1, 8)).getTime(), length: 3, assignTo: 'Jane A.'},
+     { storyId: 3, id: 5, name: 'Load images to db', startDate: (new Date(2017, 1, 8)).getTime(), length: 3, assignTo: 'Bob M.'},
+     { storyId: 3, id: 5, name: 'Add auto tests', startDate: (new Date(2017, 1, 9)).getTime(), length: 3, assignTo: 'Brain D.'},
+   ];
+   let stories = [
+     { id: 1, name: 'Allow user login'},
+     { id: 2, name: 'Backup user data'},
+     { id: 3, name: 'Show/edit/delete user images'}
+   ]
+   tasks = tasks.sort((a,b)=> a.startDate-b.startDate);
+   tasks = calculateTasksHeightInStory(tasks);
+   let dates = filterOutWeekends(startSprintDate, endSprintDate);
+   renderChart(stories, tasks, dates, editTask, editStory, removeStory);
+ }
+
 
 let timeout;
 function sprintDateChanged(el){
@@ -84,19 +108,6 @@ function filterOutWeekends(startDate, endDate){
      date.setDate(date.getDate()+1);
    }
    return filteredDates;
-}
-
-function renderDefaultTasks(){
-  let tasks = [
-    { storyId: 1, name: 'Task 1', startDate: startSprintDate.getTime(), length: 1, assignTo: 'Jane A.'},
-    { storyId: 2, name: 'Task 2', startDate: startSprintDate.getTime(), length: 2, assignTo: 'Brain D.' },
-    { storyId: 3, name: 'Task 3', startDate: startSprintDate.getTime(), length: 3, assignTo: 'Richard R.'},
-  ];
-  let stories = [
-    { id: 1, name: 'Story 1'}, { id: 2, name: 'Story 2'}, { id: 3, name: 'Story 3'}
-  ]
-  let dates = filterOutWeekends(startSprintDate, endSprintDate);
-  renderChart(stories, tasks, dates, editTask, editStory, removeStory);
 }
 
 function addStory(){
