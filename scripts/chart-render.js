@@ -83,7 +83,7 @@ function renderNameAxis(stories, scale, svg, width, clickStoryFn, removeStoryFn)
     let fObj = g.selectAll(".tick")
                 .append('svg:foreignObject')
                   .attr("x", -paddingLeft + 50)
-                  .attr("y", -barHeight + 40 )
+                  .attr("y", -barHeight + 60 )
                   .attr("width", 50)
                   .attr("height", 20);
     renderEditBtns(fObj, 'fa-pencil', clickStoryFn);

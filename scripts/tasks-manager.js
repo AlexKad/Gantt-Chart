@@ -41,14 +41,10 @@ Array.prototype.groupBy = function(keyField) {
      { storyId: 1, id: 3, name: 'Test user login/logout', startDate: (new Date(2017, 1, 3)).getTime(), length: 3, assignTo: 'Brain D.' },
      { storyId: 2, id: 4, name: 'Backup user data', startDate: (new Date(2017, 1, 6)).getTime(), length: 3, assignTo: 'Richard R.'},
      { storyId: 2, id: 5, name: 'Test backup', startDate: (new Date(2017, 1, 7)).getTime(), length: 3, assignTo: 'Brain D.'},
-     { storyId: 3, id: 5, name: 'Create images viewer', startDate: (new Date(2017, 1, 8)).getTime(), length: 3, assignTo: 'Jane A.'},
-     { storyId: 3, id: 5, name: 'Load images to db', startDate: (new Date(2017, 1, 8)).getTime(), length: 3, assignTo: 'Bob M.'},
-     { storyId: 3, id: 5, name: 'Add auto tests', startDate: (new Date(2017, 1, 9)).getTime(), length: 3, assignTo: 'Brain D.'},
    ];
    let stories = [
      { id: 1, name: 'Allow user login'},
-     { id: 2, name: 'Backup user data'},
-     { id: 3, name: 'Show/edit/delete user images'}
+     { id: 2, name: 'Backup user data'}
    ]
    tasks = tasks.sort((a,b)=> a.startDate-b.startDate);
    tasks = calculateTasksHeightInStory(tasks);
