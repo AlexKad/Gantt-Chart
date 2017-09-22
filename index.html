@@ -33,7 +33,7 @@
       <i></i>
     </div>
     <div class="modal-body">
-      <form action="#" id="editForm" onsubmit="saveTask()">
+      <form action="#" id="editForm" onsubmit="saveTask(); return false;">
         <label for="taskName">Name</label>
         <input type="text" id="taskName" required>
         <label for="startDate">Start Date</label>
@@ -62,7 +62,7 @@
       <i></i>
     </div>
     <div class="modal-body">
-      <form action="#" id="editStoryForm" onsubmit="saveStory()">
+      <form action="#" id="editStoryForm" onsubmit="saveStory(); return false;">
         <label for="tstoryName">Name</label>
         <input type="text" id="storyName" required>
         <div class="tasks">
