@@ -9,6 +9,7 @@ let currentStoryId = null;
 let currentTaskId = null;
 let startSprintDate, endSprintDate;
 let isDefaultSet = true;
+let isDefaultSprintDate = true;
 
 Array.prototype.groupBy = function(keyField) {
     var groups = {};
@@ -228,7 +229,7 @@ function saveTask(){
     tasks.push({ storyId: currentStoryId, id: currentTaskId, name, startDate, length: calcLengthInDays(count, countOpt), assignTo });
   }
 
-  if(isDefaultSet){
+  if(isDefaultSprintDate){
     startSprintDate = new Date(startDate);
     start = new Date(startDate);
     endSprintDate = new Date( start.setDate(start.getDate() + 14));
@@ -236,6 +237,7 @@ function saveTask(){
     setInputDate(startSprintDate, $('input[name=startDate]'));
     setInputDate(endSprintDate, $('input[name=endDate]'));
     isDefaultSet = false;
+    isDefaultSprintDate = false;
     currentTaskId = null;
   }
 
