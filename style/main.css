@@ -58,10 +58,10 @@ g.tick .btn i{
   font-size: 18px;
   color:#888;
 }
-g.tick:hover .btn i.fa-pencil{
+g.tick .btn:hover i.fa-pencil{
   color: royalblue;
 }
-g.tick:hover .btn i.fa-remove{
+g.tick .btn:hover i.fa-remove{
   color: firebrick;
 }
 
