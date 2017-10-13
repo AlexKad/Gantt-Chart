@@ -31,7 +31,7 @@
   <div class="modal  modal-top" id="editTaskWnd">
     <div class="modal-header" id="addTaskForm">
       <h3>Add new sprint task</h3>
-      <i></i>
+      <i class="fa fa-times" onclick="closeWnd($('#editTaskWnd'),$('#editForm'))"></i>
     </div>
     <div class="modal-body">
       <form action="#" id="editForm" onsubmit="saveTask(); return false;">
@@ -60,7 +60,7 @@
   <div class="modal" id="editStoryWnd">
     <div class="modal-header" id="addStoryForm">
       <h3>Add new sprint story</h3>
-      <i></i>
+      <i class="fa fa-times" onclick="closeWnd($('#editStoryWnd'),$('#editStoryForm'))"></i>
     </div>
     <div class="modal-body">
       <form action="#" id="editStoryForm" onsubmit="saveStory(); return false;">
